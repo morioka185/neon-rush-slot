@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 Audio System Test - NEON RUSH</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .test-section {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .test-btn {
+            background: linear-gradient(45deg, #ff0080, #00ffff);
+            border: none;
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0.25rem;
+            transition: transform 0.2s;
+        }
+
+        .test-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .volume-control input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 NEON RUSH Audio System Test</h1>
+
+    <div class="test-section">
+        <h2>🔧 Audio Manager Status</h2>
+        <button class="test-btn" onclick="updateStatus()">Update Status</button>
+        <div class="status" id="status">Loading...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎮 Game Sound Effects</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="testSound('spin')">🎰 Spin Sound</button>
+            <button class="test-btn" onclick="testSound('reelStop')">⏹️ Reel Stop</button>
+            <button class="test-btn" onclick="testSound('win')">🎉 Win Sound</button>
+            <button class="test-btn" onclick="testSound('bigWin')">💰 Big Win</button>
+            <button class="test-btn" onclick="testSound('jackpot')">🏆 Jackpot</button>
+            <button class="test-btn" onclick="testSound('coinDrop')">🪙 Coin Drop</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎵 UI Sound Effects</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="testSound('buttonClick')">🖱️ Button Click</button>
+            <button class="test-btn" onclick="testSound('buttonHover')">👆 Button Hover</button>
+            <button class="test-btn" onclick="testSound('betChange')">💱 Bet Change</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>✨ Skill Sound Effects</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="testSound('skillActivate')">⚡ Skill Activate</button>
+            <button class="test-btn" onclick="testSound('timeFreeze')">⏱️ Time Freeze</button>
+            <button class="test-btn" onclick="testSound('futureVision')">👁️ Future Vision</button>
+            <button class="test-btn" onclick="testSound('miracleSpin')">✨ Miracle Spin</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎶 Background Music</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="playMusic('bgmStage1')">🌟 Stage 1 BGM</button>
+            <button class="test-btn" onclick="playMusic('bgmStage2')">⭐ Stage 2 BGM</button>
+            <button class="test-btn" onclick="playMusic('bgmStage3')">✨ Stage 3 BGM</button>
+            <button class="test-btn" onclick="stopMusic()">⏹️ Stop Music</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎛️ Volume Controls</h2>
+        <div class="controls">
+            <div class="volume-control">
+                <label>Master:</label>
+                <input type="range" id="masterVolume" min="0" max="100" value="100"
+                       onchange="setVolume('master', this.value)">
+                <span id="masterValue">100%</span>
+            </div>
+            <div class="volume-control">
+                <label>SFX:</label>
+                <input type="range" id="sfxVolume" min="0" max="100" value="80"
+                       onchange="setVolume('sfx', this.value)">
+                <span id="sfxValue">80%</span>
+            </div>
+            <div class="volume-control">
+                <label>Music:</label>
+                <input type="range" id="musicVolume" min="0" max="100" value="60"
+                       onchange="setVolume('music', this.value)">
+                <span id="musicValue">60%</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔇 Audio Control</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="toggleMute()">🔇/🔊 Toggle Mute</button>
+            <button class="test-btn" onclick="toggleSFX()">🔇/🔊 Toggle SFX</button>
+            <button class="test-btn" onclick="toggleMusic()">🔇/🔊 Toggle Music</button>
+            <button class="test-btn" onclick="stopAll()">⏹️ Stop All</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { AudioManager } from './js/audio/AudioManager.js';
+
+        let audioManager = null;
+
+        async function initAudio() {
+            audioManager = new AudioManager();
+            await audioManager.init();
+            updateStatus();
+            console.log('🎵 Audio test initialized');
+        }
+
+        window.testSound = function(soundName) {
+            if (audioManager) {
+                console.log(`Testing sound: ${soundName}`);
+                audioManager.playSFX(soundName);
+            }
+        };
+
+        window.playMusic = function(musicName) {
+            if (audioManager) {
+                console.log(`Playing music: ${musicName}`);
+                audioManager.playBackgroundMusic(musicName);
+            }
+        };
+
+        window.stopMusic = function() {
+            if (audioManager) {
+                audioManager.stopBackgroundMusic();
+            }
+        };
+
+        window.setVolume = function(type, value) {
+            if (!audioManager) return;
+
+            const volume = value / 100;
+
+            switch(type) {
+                case 'master':
+                    audioManager.setMasterVolume(volume);
+                    document.getElementById('masterValue').textContent = `${value}%`;
+                    break;
+                case 'sfx':
+                    audioManager.setSFXVolume(volume);
+                    document.getElementById('sfxValue').textContent = `${value}%`;
+                    break;
+                case 'music':
+                    audioManager.setMusicVolume(volume);
+                    document.getElementById('musicValue').textContent = `${value}%`;
+                    break;
+            }
+        };
+
+        window.toggleMute = function() {
+            if (audioManager) {
+                const isMuted = audioManager.toggleMute();
+                console.log(`Mute: ${isMuted}`);
+            }
+        };
+
+        window.toggleSFX = function() {
+            if (audioManager) {
+                const status = audioManager.getStatus();
+                audioManager.enableSFXSounds(!status.enableSFX);
+                console.log(`SFX enabled: ${!status.enableSFX}`);
+            }
+        };
+
+        window.toggleMusic = function() {
+            if (audioManager) {
+                const status = audioManager.getStatus();
+                audioManager.enableBackgroundMusic(!status.enableMusic);
+                console.log(`Music enabled: ${!status.enableMusic}`);
+            }
+        };
+
+        window.stopAll = function() {
+            if (audioManager) {
+                audioManager.stopAllSounds();
+            }
+        };
+
+        window.updateStatus = function() {
+            if (audioManager) {
+                const status = audioManager.getStatus();
+                document.getElementById('status').innerHTML = `
+<strong>Audio Manager Status:</strong><br>
+Initialized: ${status.isInitialized}<br>
+Muted: ${status.isMuted}<br>
+Master Volume: ${Math.round(status.masterVolume * 100)}%<br>
+SFX Volume: ${Math.round(status.sfxVolume * 100)}%<br>
+Music Volume: ${Math.round(status.musicVolume * 100)}%<br>
+SFX Enabled: ${status.enableSFX}<br>
+Music Enabled: ${status.enableMusic}<br>
+Background Music: ${status.backgroundMusic || 'None'}<br>
+Active Sources: ${status.activeSources}<br>
+Loaded Sounds: ${status.loadedSounds}<br>
+Fallback Sounds: ${status.fallbackSounds}
+                `;
+            }
+        };
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initAudio);
+    </script>
+</body>
+</html>

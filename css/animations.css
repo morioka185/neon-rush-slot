@@ -1,7 +1,30 @@
 /* ========================================
    NEON RUSH - アニメーション定義
-   基盤・インフラチーム作成
+   Team E: モバイル・パフォーマンスチーム最適化済み
    ======================================== */
+
+/* ========================================
+   モバイル最適化設定
+   ======================================== */
+
+/* 低スペックデバイス用のパフォーマンス最適化 */
+@media (max-width: 480px) and (max-height: 640px) {
+    :root {
+        --animation-speed-multiplier: 1.5; /* アニメーション高速化 */
+        --particle-count-limit: 3; /* パーティクル数制限 */
+        --complex-animation-disabled: 1; /* 複雑なアニメーション無効化フラグ */
+    }
+}
+
+/* ネットワーク環境に応じた最適化 */
+@media (prefers-reduced-data: reduce) {
+    .particle-burst,
+    .particle-float,
+    .complex-animation {
+        animation: none !important;
+        opacity: 0 !important;
+    }
+}
 
 /* ========================================
    キーフレーム定義
@@ -10,17 +33,17 @@
 /* スピン関連アニメーション */
 @keyframes spin-fast {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-300%); }
+    100% { transform: translateY(-50%); }
 }
 
 @keyframes spin-slow {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-100%); }
+    100% { transform: translateY(-30%); }
 }
 
 @keyframes spin-reel {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-300%); }
+    100% { transform: translateY(-50%); }
 }
 
 /* 勝利演出アニメーション */
@@ -165,6 +188,646 @@
     100% { opacity: 0; }
 }
 
+/* 新しい当選演出キーフレーム */
+@keyframes jackpot-glow {
+    0% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+    100% {
+        filter: brightness(1.5);
+        transform: scale(1.05);
+    }
+}
+
+@keyframes big-win-pulse {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.1);
+        filter: brightness(1.3);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+@keyframes sparkle-effect {
+    0%, 100% {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        opacity: 0.7;
+        transform: rotate(90deg) scale(1.1);
+    }
+    50% {
+        opacity: 1;
+        transform: rotate(180deg) scale(1.2);
+    }
+    75% {
+        opacity: 0.7;
+        transform: rotate(270deg) scale(1.1);
+    }
+}
+
+@keyframes flash-effect {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes reach-highlight {
+    0% {
+        border-color: transparent;
+        box-shadow: none;
+    }
+    50% {
+        border-color: #ffff00;
+        box-shadow: 0 0 15px #ffff00;
+    }
+    100% {
+        border-color: #ffaa00;
+        box-shadow: 0 0 20px #ffaa00;
+    }
+}
+
+@keyframes jackpot-background-flash {
+    0% {
+        background-color: rgba(255, 215, 0, 0);
+    }
+    100% {
+        background-color: rgba(255, 215, 0, 0.3);
+    }
+}
+
+@keyframes win-background-flash {
+    0%, 100% {
+        background-color: rgba(255, 255, 255, 0);
+    }
+    50% {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* 新しい多彩な演出キーフレーム */
+@keyframes crown-drop {
+    0% {
+        transform: translateX(-50%) translateY(-100px) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-50%) translateY(50px) rotate(10deg);
+        opacity: 1;
+    }
+}
+
+@keyframes golden-float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-200px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes explosion-wave {
+    0% {
+        width: 50px;
+        height: 50px;
+        opacity: 1;
+    }
+    100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+@keyframes explosion-particle {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes cascade-wave {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.1);
+        filter: brightness(1.5);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+@keyframes cascade-flow {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(300px);
+        opacity: 0;
+    }
+}
+
+@keyframes angelic-float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-150px) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+@keyframes fire-rise {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-150px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes lightning-strike {
+    0% {
+        opacity: 0;
+        height: 0%;
+    }
+    10% {
+        opacity: 1;
+        height: 100%;
+    }
+    100% {
+        opacity: 0;
+        height: 100%;
+    }
+}
+
+@keyframes electric-spark {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0.5) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 1;
+    }
+}
+
+@keyframes coin-drop {
+    0% {
+        transform: translateY(-20px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(200px) rotate(720deg);
+        opacity: 0.8;
+    }
+}
+
+@keyframes suspense-flicker {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes tease-wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-2deg);
+    }
+    75% {
+        transform: rotate(2deg);
+    }
+}
+
+/* 特殊エフェクト用クラス */
+.royal-background {
+    background: linear-gradient(45deg, #ffd700, #ffeb3b, #ffd700);
+    animation: royal-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes royal-shimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.divine-glow {
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.8), inset 0 0 50px rgba(255, 255, 255, 0.3);
+    animation: divine-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes divine-pulse {
+    0% {
+        filter: brightness(1);
+    }
+    100% {
+        filter: brightness(1.3);
+    }
+}
+
+.flame-wave {
+    background: linear-gradient(45deg, #ff4444, #ff8800, #ffaa00);
+    animation: flame-flicker 0.5s ease-in-out infinite;
+}
+
+@keyframes flame-flicker {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.4);
+    }
+}
+
+.gentle-glow {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    animation: gentle-pulse 1s ease-in-out;
+}
+
+@keyframes gentle-pulse {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.2);
+    }
+}
+
+.pulse-glow {
+    animation: pulse-glow-effect 0.6s ease-in-out 2;
+}
+
+@keyframes pulse-glow-effect {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+    }
+}
+
+.slow-motion {
+    animation: slow-motion-effect 1.5s ease-out;
+}
+
+@keyframes slow-motion-effect {
+    0% {
+        filter: blur(0px);
+    }
+    50% {
+        filter: blur(2px);
+    }
+    100% {
+        filter: blur(0px);
+    }
+}
+
+.dramatic-buildup {
+    animation: dramatic-tension 2s ease-in-out;
+}
+
+@keyframes dramatic-tension {
+    0% {
+        filter: brightness(1) contrast(1);
+    }
+    50% {
+        filter: brightness(0.7) contrast(1.3);
+    }
+    100% {
+        filter: brightness(1.2) contrast(1.1);
+    }
+}
+
+/* 🎬 リール速度制御系アニメーション */
+
+/* スロー系 */
+.slow-spin {
+    animation: slow-spin-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes slow-spin-pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+    }
+}
+
+.ultra-slow {
+    animation: ultra-slow-glow 1.2s ease-in-out infinite;
+}
+
+@keyframes ultra-slow-glow {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+    }
+}
+
+.ultra-slow-spin {
+    animation: ultra-slow-spin-effect 1.5s ease-in-out infinite;
+}
+
+@keyframes ultra-slow-spin-effect {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        filter: brightness(1);
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    }
+    50% {
+        transform: scale(1.08) rotate(5deg);
+        filter: brightness(1.3);
+        box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+    }
+}
+
+/* 一時停止演出 */
+.freeze-moment {
+    animation: freeze-moment-effect 0.5s ease-in-out;
+}
+
+@keyframes freeze-moment-effect {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.15);
+        filter: brightness(1.5) saturate(1.5);
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+    }
+    100% {
+        transform: scale(1.1);
+        filter: brightness(1.2);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+}
+
+/* 加速系 */
+.accelerating {
+    animation: acceleration-blur 0.1s linear infinite;
+}
+
+@keyframes acceleration-blur {
+    0% {
+        filter: blur(0px);
+        transform: translateY(0px);
+    }
+    100% {
+        filter: blur(1px);
+        transform: translateY(-2px);
+    }
+}
+
+.sudden-stop {
+    animation: sudden-stop-impact 0.3s ease-out;
+}
+
+@keyframes sudden-stop-impact {
+    0% {
+        transform: scale(1.3) translateY(-10px);
+        filter: brightness(2) blur(2px);
+    }
+    50% {
+        transform: scale(0.9) translateY(5px);
+        filter: brightness(0.8);
+    }
+    100% {
+        transform: scale(1) translateY(0px);
+        filter: brightness(1);
+    }
+}
+
+/* 期待感演出系 */
+.expectation-low {
+    animation: expectation-low-pulse 2s ease-in-out infinite;
+}
+
+@keyframes expectation-low-pulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 255, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(255, 255, 0, 0.4);
+    }
+}
+
+.expectation-medium {
+    animation: expectation-medium-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes expectation-medium-pulse {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 165, 0, 0.4);
+        filter: brightness(1);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 165, 0, 0.7);
+        filter: brightness(1.2);
+    }
+}
+
+.expectation-high {
+    animation: expectation-high-pulse 1s ease-in-out infinite;
+}
+
+@keyframes expectation-high-pulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        filter: brightness(1);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(255, 0, 0, 0.9);
+        filter: brightness(1.4);
+        transform: scale(1.03);
+    }
+}
+
+.expectation-max {
+    animation: expectation-max-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes expectation-max-pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        filter: brightness(1.2) saturate(1.5);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 255, 255, 1);
+        filter: brightness(2) saturate(2);
+        transform: scale(1.08);
+    }
+}
+
+/* 竜巻エフェクト補助 */
+.tornado-spinning {
+    animation: tornado-spin-base 0.1s linear infinite;
+}
+
+@keyframes tornado-spin-base {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* リール個別エフェクト */
+.reel-highlight {
+    position: relative;
+}
+
+.reel-highlight::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    border-radius: inherit;
+    z-index: -1;
+    animation: reel-highlight-sweep 2s ease-in-out infinite;
+}
+
+@keyframes reel-highlight-sweep {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* 新しいビッグウィンエフェクト */
+.rainbow-wave {
+    background: linear-gradient(45deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #4400ff, #ff00ff);
+    background-size: 400% 400%;
+    animation: rainbow-wave-effect 1.5s ease-in-out;
+}
+
+@keyframes rainbow-wave-effect {
+    0% {
+        background-position: 0% 50%;
+        filter: brightness(1);
+    }
+    50% {
+        background-position: 100% 50%;
+        filter: brightness(1.5);
+    }
+    100% {
+        background-position: 0% 50%;
+        filter: brightness(1);
+    }
+}
+
+.tornado-effect {
+    animation: tornado-spin-effect 1.5s ease-in-out;
+}
+
+@keyframes tornado-spin-effect {
+    0% {
+        transform: rotate(0deg) scale(1);
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+        filter: hue-rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        filter: hue-rotate(360deg);
+    }
+}
+
+@keyframes spiraling-motion {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%)
+                   translate(calc(cos(var(--spiral-angle, 0)) * 150px), calc(sin(var(--spiral-angle, 0)) * 150px))
+                   rotate(720deg) scale(0.3);
+        opacity: 0;
+    }
+}
+
+@keyframes colorful-float {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg) scale(0.5);
+        opacity: 0;
+    }
+}
+
 /* ゲージアニメーション */
 @keyframes heat-gauge-fill {
     0% { width: 0%; }
@@ -181,17 +844,28 @@
    アニメーションクラス
    ======================================== */
 
-/* スピン系 */
-.reel-spinning {
+/* スピン系 - シンボルのみに限定 */
+.symbol.reel-spinning {
     animation: spin-reel 0.1s linear infinite;
 }
 
-.spinning-fast {
+.symbol.spinning-fast {
     animation: spin-fast 0.05s linear infinite;
 }
 
-.spinning-slow {
+.symbol.spinning-slow {
     animation: spin-slow 0.2s linear infinite;
+}
+
+/* スピンボタンとコントロール要素の除外 */
+.spin-btn,
+.bet-btn,
+.skill-btn,
+.control-panel *,
+.header *,
+.footer * {
+    animation: none !important;
+    transform: none !important;
 }
 
 /* 勝利演出系 */
@@ -207,6 +881,39 @@
     animation:
         winning-pulse 0.3s ease-in-out 5,
         neon-pulse 1s ease-in-out infinite;
+}
+
+/* 強化された当選演出 */
+.jackpot-glow {
+    animation: jackpot-glow 0.5s ease-in-out infinite alternate;
+    box-shadow: 0 0 30px gold, 0 0 60px gold, 0 0 90px gold;
+}
+
+.big-win-pulse {
+    animation: big-win-pulse 0.4s ease-in-out 4;
+    box-shadow: 0 0 20px #ff4444, 0 0 40px #ff4444;
+}
+
+.sparkle-effect {
+    animation: sparkle-effect 1s ease-in-out infinite;
+}
+
+.flash-effect {
+    animation: flash-effect 0.1s ease-in-out infinite;
+}
+
+.reach-highlight {
+    animation: reach-highlight 2s ease-in-out;
+    border: 2px solid #ffff00;
+    box-shadow: 0 0 15px #ffff00;
+}
+
+.jackpot-flash {
+    animation: jackpot-background-flash 0.5s ease-in-out infinite;
+}
+
+.win-flash {
+    animation: win-background-flash 0.3s ease-in-out 3;
 }
 
 /* パーティクル系 */
@@ -242,6 +949,301 @@
     animation: god-mode-glow 2s ease-in-out infinite;
 }
 
+/* 🧠 脳汁爆発アニメーション */
+
+/* メインタイトル登場アニメーション */
+@keyframes brain-juice-title-intro {
+    0% {
+        transform: scale(0.1) rotate(-180deg);
+        opacity: 0;
+        filter: blur(10px);
+    }
+    50% {
+        transform: scale(1.2) rotate(0deg);
+        opacity: 0.8;
+        filter: blur(2px);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
+
+/* 金額表示グロー効果 */
+@keyframes brain-juice-amount-glow {
+    0% {
+        box-shadow: 0 0 30px rgba(255,255,255,0.5), inset 0 0 20px rgba(255,255,255,0.2);
+        background-position: 0% 50%;
+        transform: scale(1);
+    }
+    100% {
+        box-shadow: 0 0 50px rgba(255,255,255,0.8), inset 0 0 30px rgba(255,255,255,0.4);
+        background-position: 100% 50%;
+        transform: scale(1.02);
+    }
+}
+
+/* キラキラ装飾 */
+@keyframes brain-juice-sparkle {
+    0% {
+        opacity: 0.8;
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        opacity: 1;
+        transform: rotate(90deg) scale(1.1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: rotate(180deg) scale(0.9);
+    }
+    75% {
+        opacity: 1;
+        transform: rotate(270deg) scale(1.1);
+    }
+    100% {
+        opacity: 0.8;
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+/* ジャックポット登場演出 */
+@keyframes brain-juice-jackpot-entrance {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.1) rotate(720deg);
+        filter: brightness(0);
+    }
+    30% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(0.8) rotate(360deg);
+        filter: brightness(1.5);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+        filter: brightness(2);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        filter: brightness(1);
+    }
+}
+
+/* ジャックポット背景効果 */
+@keyframes brain-juice-jackpot-bg {
+    0% {
+        opacity: 0.1;
+        transform: scale(0.8);
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(1.2);
+        filter: hue-rotate(180deg);
+    }
+    100% {
+        opacity: 0.1;
+        transform: scale(0.8);
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* ビッグウィン登場演出 */
+@keyframes brain-juice-big-win-entrance {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3) rotateY(180deg);
+        filter: blur(5px);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1.1) rotateY(90deg);
+        filter: blur(1px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+        filter: blur(0px);
+    }
+}
+
+/* スモールウィン登場演出 */
+@keyframes brain-juice-small-win-entrance {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5) translateY(-100px);
+        filter: brightness(0.5);
+    }
+    70% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.05) translateY(10px);
+        filter: brightness(1.2);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) translateY(0px);
+        filter: brightness(1);
+    }
+}
+
+/* ジャックポットフィナーレ */
+@keyframes brain-juice-jackpot-finale {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: brightness(1) hue-rotate(0deg);
+    }
+    25% {
+        transform: translate(-50%, -50%) scale(1.3);
+        filter: brightness(2) hue-rotate(90deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(0.8);
+        filter: brightness(3) hue-rotate(180deg);
+    }
+    75% {
+        transform: translate(-50%, -50%) scale(1.4);
+        filter: brightness(2.5) hue-rotate(270deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.1);
+        filter: brightness(1.8) hue-rotate(360deg);
+    }
+}
+
+/* ビッグウィンフィナーレ */
+@keyframes brain-juice-big-win-finale {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        filter: brightness(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(180deg);
+        filter: brightness(1.5);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.1) rotate(360deg);
+        filter: brightness(1.3);
+    }
+}
+
+/* スモールウィンフィナーレ */
+@keyframes brain-juice-small-win-finale {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        filter: brightness(1.2);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.05);
+        filter: brightness(1.1);
+    }
+}
+
+/* フェードアウト */
+@keyframes brain-juice-fadeout {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+}
+
+/* メガパーティクル爆発（ジャックポット用） */
+@keyframes brain-juice-mega-explosion {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%)
+                   translate(calc(cos(var(--angle)) * var(--distance)),
+                            calc(sin(var(--angle)) * var(--distance)))
+                   scale(0.3) rotate(1080deg);
+        opacity: 0;
+    }
+}
+
+/* ウィンパーティクル爆発（ビッグウィン用） */
+@keyframes brain-juice-win-explosion {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%)
+                   translate(calc(cos(var(--angle)) * var(--distance)),
+                            calc(sin(var(--angle)) * var(--distance)))
+                   scale(0.2) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* 🎯 勝利表示スケールパルス */
+.jackpot-scale-pulse {
+    animation: gentle-scale-pulse 2s ease-in-out infinite;
+}
+
+.bigwin-scale-pulse {
+    animation: gentle-scale-pulse 1.5s ease-in-out infinite;
+}
+
+.smallwin-scale-pulse {
+    animation: gentle-scale-pulse 1s ease-in-out infinite;
+}
+
+@keyframes gentle-scale-pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.02);
+    }
+}
+
+/* 🎯 倍率表示パルスアニメーション */
+@keyframes multiplier-pulse-gold {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 20px #FFD700, 0 0 40px #FF8C00;
+    }
+    50% {
+        transform: scale(1.15);
+        text-shadow: 0 0 30px #FFD700, 0 0 60px #FF8C00;
+    }
+}
+
+@keyframes multiplier-pulse-red {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 15px #FF6B6B, 0 0 30px #FF1744;
+    }
+    50% {
+        transform: scale(1.12);
+        text-shadow: 0 0 25px #FF6B6B, 0 0 45px #FF1744;
+    }
+}
+
+@keyframes multiplier-pulse-blue {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 10px #4ECDC4, 0 0 20px #00BCD4;
+    }
+    50% {
+        transform: scale(1.08);
+        text-shadow: 0 0 20px #4ECDC4, 0 0 35px #00BCD4;
+    }
+}
+}
+
 /* UI系 */
 .button-pressed {
     animation: button-press 0.2s ease-out;
@@ -263,6 +1265,87 @@
     animation: fade-out 0.3s ease-out;
 }
 
+/* スキル関連アニメーション */
+@keyframes freeze-pulse {
+    0% { background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%); }
+    50% { background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 0%, transparent 70%); }
+    100% { background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, transparent 70%); }
+}
+
+@keyframes instruction-glow {
+    0% { border-color: #00ffff; box-shadow: 0 0 10px #00ffff; }
+    100% { border-color: #00cccc; box-shadow: 0 0 20px #00cccc; }
+}
+
+@keyframes freeze-in {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes unfreeze-burst {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes vision-pulse {
+    0% { opacity: 0; transform: scale(0.8); filter: hue-rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.1); filter: hue-rotate(180deg); }
+    100% { opacity: 1; transform: scale(1); filter: hue-rotate(360deg); }
+}
+
+@keyframes miracle-sparkle {
+    0% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+    25% { opacity: 1; transform: scale(1.1) rotate(90deg); }
+    50% { opacity: 1; transform: scale(1) rotate(180deg); }
+    75% { opacity: 1; transform: scale(1.1) rotate(270deg); }
+    100% { opacity: 1; transform: scale(1) rotate(360deg); }
+}
+
+@keyframes special-win-burst {
+    0% { opacity: 0; transform: scale(0.5); filter: brightness(0.5); }
+    25% { opacity: 1; transform: scale(1.2); filter: brightness(1.5); }
+    50% { opacity: 1; transform: scale(1); filter: brightness(1); }
+    75% { opacity: 1; transform: scale(1.1); filter: brightness(1.2); }
+    100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+.time-frozen {
+    position: relative;
+    filter: brightness(0.8) contrast(1.2);
+}
+
+.time-frozen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.manually-stopped {
+    filter: brightness(1.5) drop-shadow(0 0 15px #00ff00) !important;
+    animation: manual-stop-glow 0.5s ease-out;
+}
+
+@keyframes manual-stop-glow {
+    0% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 5px #00ff00); }
+    50% { transform: scale(1.1); filter: brightness(2) drop-shadow(0 0 25px #00ff00); }
+    100% { transform: scale(1); filter: brightness(1.5) drop-shadow(0 0 15px #00ff00); }
+}
+
+@keyframes multiplier-burst {
+    0% { opacity: 0; transform: scale(0.5); filter: brightness(0.5); }
+    25% { opacity: 1; transform: scale(1.3); filter: brightness(2); }
+    50% { opacity: 1; transform: scale(1); filter: brightness(1.5); }
+    75% { opacity: 1; transform: scale(1.1); filter: brightness(1.8); }
+    100% { opacity: 0; transform: scale(1); filter: brightness(1); }
+}
+
 /* ゲージ・カウンター系 */
 .heat-gauge-animate {
     animation: heat-gauge-fill 1s ease-out;
@@ -273,7 +1356,7 @@
 }
 
 /* ========================================
-   パフォーマンス最適化
+   パフォーマンス最適化 (Team E強化版)
    ======================================== */
 
 /* GPU加速の指定 */
@@ -285,11 +1368,55 @@
 .god-mode-bg {
     transform: translateZ(0);
     will-change: transform, opacity;
+    backface-visibility: hidden; /* モバイル最適化 */
+    perspective: 1000px; /* 3D変換最適化 */
+}
+
+/* モバイル向けGPU加速強化 */
+@media (max-width: 768px) {
+    .symbol {
+        transform: translateZ(0);
+        will-change: transform;
+        backface-visibility: hidden;
+    }
+
+    .spin-btn {
+        transform: translateZ(0) !important;
+        will-change: transform, box-shadow;
+        backface-visibility: hidden;
+        /* スピンボタンのアニメーション完全除外 */
+        animation: none !important;
+    }
 }
 
 /* アニメーション後のクリーンアップ */
 .animation-cleanup {
     will-change: auto;
+    transform: none;
+    backface-visibility: visible;
+}
+
+/* フレームレート最適化 */
+@media (max-width: 480px) {
+    .reel-spinning {
+        animation-timing-function: steps(10, end); /* ステップアニメーション */
+    }
+
+    .winning-pulse {
+        animation-duration: 0.3s; /* 短縮 */
+        animation-iteration-count: 2; /* 回数削減 */
+    }
+}
+
+/* バッテリー最適化 */
+@media (prefers-reduced-motion: no-preference) and (max-width: 768px) {
+    .complex-animation {
+        animation-play-state: paused;
+    }
+
+    .game-container.playing .complex-animation {
+        animation-play-state: running;
+    }
 }
 
 /* ========================================
@@ -370,4 +1497,65 @@
 .debug-no-animation * {
     animation: none !important;
     transition: none !important;
+}
+
+/* ========================================
+   タイムフリーズスキル専用アニメーション
+   ======================================== */
+
+/* クリック可能なリールのパルス効果 */
+@keyframes clickable-pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px #00ffff;
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff;
+    }
+}
+
+/* タップマーカーの上下移動 */
+@keyframes tap-bounce {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* 指示メッセージのグロー効果を強化 */
+@keyframes instruction-glow {
+    0% {
+        box-shadow: 0 0 10px #00ffff;
+        border-color: #00ffff;
+    }
+    100% {
+        box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff;
+        border-color: #00cccc;
+    }
+}
+
+/* タイミングフィードバックのポップアップ */
+@keyframes feedback-popup {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+    40% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
 }

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 簡単音響テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .test-btn {
+            background: linear-gradient(45deg, #ff0080, #00ffff);
+            border: none;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .test-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .status {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
+        .warning {
+            background: rgba(255,0,0,0.2);
+            border: 2px solid #ff4444;
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 NEON RUSH 音響テスト</h1>
+
+    <div class="warning">
+        <h3>⚠️ 重要 ⚠️</h3>
+        <p>音を再生するには最初にボタンをクリックしてください</p>
+        <p>（ブラウザのセキュリティ要件）</p>
+    </div>
+
+    <button class="test-btn" onclick="initAudio()">🎵 オーディオ初期化</button>
+
+    <div class="status" id="status">初期化前...</div>
+
+    <div id="controls" style="display: none;">
+        <h3>🎰 効果音テスト</h3>
+        <button class="test-btn" onclick="playSimpleBeep()">🔊 シンプルビープ</button>
+        <button class="test-btn" onclick="playSpinSound()">🎰 スピン音</button>
+        <button class="test-btn" onclick="playWinSound()">🎉 勝利音</button>
+        <button class="test-btn" onclick="playJackpotSound()">🏆 ジャックポット</button>
+        <button class="test-btn" onclick="playBGM()">🎵 BGM開始</button>
+        <button class="test-btn" onclick="stopBGM()">⏹️ BGM停止</button>
+    </div>
+
+    <script>
+        let audioContext = null;
+        let bgmNodes = null;
+
+        async function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // サスペンド状態の場合は再開
+                if (audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+
+                document.getElementById('status').innerHTML = `
+✅ オーディオ初期化成功！<br>
+状態: ${audioContext.state}<br>
+サンプルレート: ${audioContext.sampleRate}Hz<br>
+現在時刻: ${audioContext.currentTime.toFixed(2)}秒
+                `;
+
+                document.getElementById('controls').style.display = 'block';
+
+                // 初期化音を再生
+                playSimpleBeep();
+
+            } catch (error) {
+                document.getElementById('status').innerHTML = `
+❌ オーディオ初期化失敗: ${error.message}
+                `;
+            }
+        }
+
+        function playSimpleBeep() {
+            if (!audioContext) {
+                alert('先にオーディオを初期化してください');
+                return;
+            }
+
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            osc.frequency.value = 800;
+            osc.type = 'sine';
+
+            gain.gain.setValueAtTime(0, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+
+            osc.start();
+            osc.stop(audioContext.currentTime + 0.3);
+
+            console.log('🔊 ビープ音再生');
+        }
+
+        function playSpinSound() {
+            if (!audioContext) return;
+
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(300, audioContext.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 2);
+
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(800, audioContext.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(2000, audioContext.currentTime + 2);
+
+            gain.gain.setValueAtTime(0, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.5, audioContext.currentTime + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioContext.destination);
+
+            osc.start();
+            osc.stop(audioContext.currentTime + 2);
+
+            console.log('🎰 スピン音再生');
+        }
+
+        function playWinSound() {
+            if (!audioContext) return;
+
+            const notes = [523, 659, 784]; // C-E-G
+
+            notes.forEach((freq, index) => {
+                const delay = index * 0.15;
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.frequency.value = freq;
+                osc.type = 'triangle';
+
+                gain.gain.setValueAtTime(0, audioContext.currentTime + delay);
+                gain.gain.exponentialRampToValueAtTime(0.4, audioContext.currentTime + delay + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + delay + 0.8);
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                osc.start(audioContext.currentTime + delay);
+                osc.stop(audioContext.currentTime + delay + 0.8);
+            });
+
+            console.log('🎉 勝利音再生');
+        }
+
+        function playJackpotSound() {
+            if (!audioContext) return;
+
+            // ジャックポット音
+            playWinSound();
+
+            // キラキラ効果
+            setTimeout(() => {
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+
+                        osc.frequency.value = 1000 + Math.random() * 2000;
+                        osc.type = 'sine';
+
+                        gain.gain.setValueAtTime(0, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.2, audioContext.currentTime + 0.01);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+
+                        osc.connect(gain);
+                        gain.connect(audioContext.destination);
+
+                        osc.start();
+                        osc.stop(audioContext.currentTime + 0.2);
+                    }, i * 100);
+                }
+            }, 500);
+
+            console.log('🏆 ジャックポット音再生');
+        }
+
+        function playBGM() {
+            if (!audioContext || bgmNodes) return;
+
+            stopBGM(); // 既存のBGMを停止
+
+            // シンプルなBGM
+            const createOscillator = (freq, type = 'sine', volume = 0.1) => {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.frequency.value = freq;
+                osc.type = type;
+                gain.gain.value = volume;
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                return { osc, gain };
+            };
+
+            // ベース
+            const bass = createOscillator(110, 'triangle', 0.2);
+
+            // メロディ
+            const melody = createOscillator(440, 'square', 0.1);
+
+            bgmNodes = [bass, melody];
+
+            // 開始
+            bgmNodes.forEach(node => node.osc.start());
+
+            // メロディの変化
+            let currentTime = audioContext.currentTime;
+            const melodyNotes = [440, 523, 659, 523];
+
+            const scheduleNotes = () => {
+                melodyNotes.forEach((note, index) => {
+                    melody.osc.frequency.setValueAtTime(note, currentTime + index);
+                });
+                currentTime += 4;
+                setTimeout(scheduleNotes, 4000);
+            };
+
+            scheduleNotes();
+
+            console.log('🎵 BGM開始');
+        }
+
+        function stopBGM() {
+            if (bgmNodes) {
+                bgmNodes.forEach(node => {
+                    try {
+                        node.osc.stop();
+                    } catch (e) {
+                        // 既に停止している場合
+                    }
+                });
+                bgmNodes = null;
+                console.log('⏹️ BGM停止');
+            }
+        }
+
+        // ページ離脱時にBGM停止
+        window.addEventListener('beforeunload', stopBGM);
+    </script>
+</body>
+</html>

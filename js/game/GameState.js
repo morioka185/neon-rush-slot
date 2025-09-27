@@ -1,4 +1,4 @@
-class GameState {
+export class GameState {
   constructor() {
     this.state = {
       coins: 10000,
@@ -9,6 +9,7 @@ class GameState {
       totalSpins: 0,
       maxCoins: 10000,
       consecutiveWins: 0,
+      consecutiveLosses: 0,
       skills: {
         timeFreeze: 1,
         futureVision: 1,
@@ -56,6 +57,8 @@ class GameState {
 
     if (this.state.coins <= 0 && this.state.bet > 0) {
       this.state.gameOver = true;
+    } else if (this.state.coins >= this.state.bet && this.state.bet > 0) {
+      this.state.gameOver = false;
     }
 
     this.notify('stateChange', {
@@ -74,7 +77,13 @@ class GameState {
 
   updateCoins(amount) {
     const newCoins = Math.max(0, this.state.coins + amount);
-    this.setState({ coins: newCoins });
+    const updateData = { coins: newCoins };
+
+    if (newCoins >= this.state.bet && this.state.bet > 0) {
+      updateData.gameOver = false;
+    }
+
+    this.setState(updateData);
     return newCoins;
   }
 
@@ -95,6 +104,21 @@ class GameState {
            !this.state.gameOver;
   }
 
+  canAffordBet(betAmount = null) {
+    const bet = betAmount || this.state.bet;
+    return this.state.coins >= bet;
+  }
+
+  getInsufficientFundsInfo() {
+    return {
+      currentCoins: this.state.coins,
+      requiredBet: this.state.bet,
+      shortage: this.state.bet - this.state.coins,
+      suggestedBet: Math.max(1, this.state.coins),
+      canContinue: this.state.coins > 0
+    };
+  }
+
   startSpin() {
     if (!this.canSpin()) {
       throw new Error('スピンできません');
@@ -111,22 +135,41 @@ class GameState {
   endSpin(winAmount = 0) {
     const isWin = winAmount > 0;
     const consecutiveWins = isWin ? this.state.consecutiveWins + 1 : 0;
+    const consecutiveLosses = isWin ? 0 : this.state.consecutiveLosses + 1;
 
     let heatGauge = this.state.heatGauge;
     if (isWin) {
       heatGauge = Math.min(100, heatGauge + (winAmount / this.state.bet * 10));
-    } else {
-      heatGauge = Math.max(0, heatGauge - 5);
     }
+    // HEATゲージは外れても減少しない
 
     this.setState({
       isSpinning: false,
       consecutiveWins,
+      consecutiveLosses,
       heatGauge
     });
 
     if (winAmount > 0) {
       this.updateCoins(winAmount);
+    }
+
+    // HEAT MAX時のステージアップチェック
+    if (heatGauge >= 100 && this.state.stage < 5) {
+      this.setState({
+        stage: Math.min(5, this.state.stage + 1),
+        heatGauge: 0
+      });
+      this.notify('stageUp', { newStage: this.state.stage, oldStage: this.state.stage - 1, reason: 'HEAT MAX' });
+    }
+
+    // 10連続外れでステージダウン（STAGE2以上の場合）
+    if (consecutiveLosses >= 10 && this.state.stage > 1) {
+      this.setState({
+        stage: 1,
+        consecutiveLosses: 0
+      });
+      this.notify('stageDown', { newStage: 1, oldStage: this.state.stage, reason: '10連続外れ' });
     }
 
     this.checkStageUp();
@@ -172,6 +215,7 @@ class GameState {
       totalSpins: 0,
       maxCoins: 10000,
       consecutiveWins: 0,
+      consecutiveLosses: 0,
       skills: {
         timeFreeze: 1,
         futureVision: 1,
@@ -198,7 +242,16 @@ class GameState {
       if (saved) {
         const loadedState = JSON.parse(saved);
         Object.assign(this.state, loadedState);
+
+        // 常にスピン状態はリセット
         this.state.isSpinning = false;
+
+        // ロード時にゲームオーバー状態を再評価
+        if (this.state.coins >= this.state.bet && this.state.bet > 0) {
+          this.state.gameOver = false;
+        } else if (this.state.coins <= 0 && this.state.bet > 0) {
+          this.state.gameOver = true;
+        }
       }
     } catch (error) {
       console.warn('ゲーム状態の読み込みに失敗しました:', error);

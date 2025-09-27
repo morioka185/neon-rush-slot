@@ -27,6 +27,146 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* QA修正: 勝利ハイライト用CSS */
+.winning-symbol {
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+    animation: winPulse 1s ease-in-out infinite alternate;
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+}
+
+@keyframes winPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+}
+
+/* 残高不足時のスタイル */
+.insufficient-funds-dialog .funds-container {
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid #dc143c;
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.insufficient-funds-dialog .funds-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+}
+
+.insufficient-funds-dialog .funds-title {
+    color: #dc143c;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+}
+
+.insufficient-funds-dialog .funds-info {
+    color: #ccc;
+    margin: 0.25rem 0;
+}
+
+.insufficient-funds-dialog .funds-shortage {
+    color: #ff6b6b;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.insufficient-funds-dialog .funds-options {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.insufficient-funds-dialog .option-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.insufficient-funds-dialog .option-card:hover {
+    border-color: #dc143c;
+    background: rgba(220, 20, 60, 0.1);
+}
+
+.insufficient-funds-dialog .option-card h3 {
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+}
+
+.insufficient-funds-dialog .option-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(145deg, #dc143c, #b71c1c);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.75rem;
+}
+
+.insufficient-funds-dialog .option-btn:hover {
+    background: linear-gradient(145deg, #ff1744, #dc143c);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+}
+
+.insufficient-funds-dialog .funds-cancel {
+    background: #666;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.insufficient-funds-dialog .funds-cancel:hover {
+    background: #777;
+}
+
+/* スピンボタンの残高不足状態 */
+#spin-button.insufficient-funds {
+    background: linear-gradient(145deg, #666, #444);
+    color: #ccc;
+    cursor: not-allowed;
+    animation: none;
+}
+
+#spin-button.game-over {
+    background: linear-gradient(145deg, #333, #222);
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* 残高警告のアニメーション */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* フェードインアニメーション */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 /* ========================================
    レイアウトシステム
    ======================================== */
@@ -42,7 +182,7 @@ body {
 /* ヘッダー */
 .header {
     flex-shrink: 0;
-    height: 60px;
+    height: 50px;
     background: linear-gradient(135deg, var(--dark-bg) 0%, rgba(255, 0, 255, 0.1) 100%);
     border-bottom: 1px solid var(--neon-pink);
     display: flex;
@@ -57,6 +197,7 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    position: relative;
 }
 
 .game-title {
@@ -82,13 +223,243 @@ body {
     font-weight: bold;
 }
 
+/* オーディオコントロール */
+.audio-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.audio-btn {
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.audio-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.audio-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+.audio-btn.muted {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: #ff4444;
+}
+
+.audio-btn.muted:hover {
+    background: rgba(255, 0, 0, 0.2);
+    border-color: #ff6666;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+}
+
+.audio-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+    user-select: none;
+}
+
+/* オーディオ設定モーダル */
+.audio-settings-modal {
+    max-width: 400px;
+    width: 90%;
+    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 15px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 1rem;
+    border-bottom: 1px solid var(--neon-cyan);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--neon-cyan);
+    font-size: 1.2rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff4444;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.setting-group {
+    margin-bottom: 1.5rem;
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.volume-control input[type="range"] {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.volume-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.volume-control input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.volume-value {
+    min-width: 50px;
+    text-align: right;
+    color: var(--neon-cyan);
+    font-weight: bold;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding-left: 35px;
+    margin: 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked ~ .checkmark {
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-label input[type="checkbox"]:checked ~ .checkmark:after {
+    display: block;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid #000;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.test-btn {
+    background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan));
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 1rem;
+}
+
+.test-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
 /* メインゲームエリア */
 .main-game {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
-    gap: 1rem;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 85px); /* ヘッダー(50px) + フッター(35px) = 85px */
     min-height: 0;
 }
 
@@ -135,7 +506,7 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    min-height: 250px;
+    min-height: 200px;
 }
 
 .slot-grid {
@@ -143,14 +514,15 @@ body {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 2px;
-    max-width: min(350px, 80vw);
+    max-width: min(280px, 75vw);
     width: 100%;
     aspect-ratio: 1;
     background: rgba(0, 0, 0, 0.5);
     border: 2px solid var(--neon-cyan);
-    border-radius: 12px;
-    padding: 8px;
+    border-radius: 8px;
+    padding: 6px;
     position: relative;
+    overflow: hidden;
 }
 
 .symbol {
@@ -165,6 +537,7 @@ body {
     overflow: hidden;
     cursor: pointer;
     transition: all 0.3s ease;
+    z-index: 1;
 }
 
 .symbol:hover {
@@ -188,7 +561,7 @@ body {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 /* ベットコントロール */
@@ -232,16 +605,19 @@ body {
 .spin-control {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
 }
 
 .spin-btn {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     border: 3px solid var(--neon-cyan);
     background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, rgba(0, 255, 255, 0.05) 100%);
     color: var(--neon-cyan);
-    font-size: 1.2rem;
+    font-size: 0.8rem;
     font-weight: bold;
     letter-spacing: 1px;
     cursor: pointer;
@@ -260,6 +636,47 @@ body {
 .spin-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* オートスピンボタン */
+.auto-spin-btn {
+    width: 50px;
+    height: 30px;
+    border-radius: 15px;
+    border: 2px solid var(--neon-yellow);
+    background: rgba(255, 255, 0, 0.1);
+    color: var(--neon-yellow);
+    font-size: 0.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.auto-spin-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 0, 0.2);
+    box-shadow: var(--glow) var(--neon-yellow);
+    transform: scale(1.05);
+}
+
+.auto-spin-btn.active {
+    background: rgba(255, 255, 0, 0.3);
+    box-shadow:
+        var(--glow) var(--neon-yellow),
+        inset var(--glow) var(--neon-yellow);
+    animation: pulse-yellow 1s ease-in-out infinite;
+}
+
+.auto-spin-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@keyframes pulse-yellow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
 }
 
 /* スキルコントロール */
@@ -323,7 +740,7 @@ body {
 /* フッター */
 .footer {
     flex-shrink: 0;
-    height: 40px;
+    height: 35px;
     padding: 0 1rem;
     display: flex;
     align-items: center;
@@ -360,6 +777,273 @@ body {
     height: 100%;
     background: linear-gradient(90deg, var(--neon-green) 0%, var(--neon-yellow) 50%, var(--neon-pink) 100%);
     transition: width 0.5s ease;
+}
+
+/* 連続外れ回数表示 */
+.consecutive-losses-display {
+    font-size: 0.7rem;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.consecutive-losses-display.warning {
+    background: rgba(255, 164, 0, 0.2);
+    border-color: #ffa500;
+    color: #ffa500;
+}
+
+.consecutive-losses-display.danger {
+    background: rgba(255, 68, 68, 0.2);
+    border-color: #ff4444;
+    color: #ff4444;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* ステージ通知表示 */
+.stage-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: 15000;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+.stage-notification.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.stage-notification.fade-out {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+}
+
+.stage-notification-content {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(26, 26, 46, 0.95) 100%);
+    border: 3px solid;
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    min-width: 300px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.stage-notification.stage-up .stage-notification-content {
+    border-color: var(--neon-green);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 255, 0, 0.3);
+}
+
+.stage-notification.stage-down .stage-notification-content {
+    border-color: #ff4444;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 68, 68, 0.3);
+}
+
+.stage-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: stage-icon-bounce 2s ease-in-out infinite;
+}
+
+.stage-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.stage-notification.stage-up .stage-title {
+    color: var(--neon-green);
+    text-shadow: 0 0 20px var(--neon-green);
+}
+
+.stage-notification.stage-down .stage-title {
+    color: #ff4444;
+    text-shadow: 0 0 20px #ff4444;
+}
+
+.stage-number {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 30px var(--neon-yellow);
+    animation: stage-number-glow 1.5s ease-in-out infinite alternate;
+}
+
+.stage-reason {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 15px var(--neon-cyan);
+}
+
+.stage-bonus {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 20px var(--neon-yellow);
+}
+
+.stage-skills {
+    font-size: 1rem;
+    color: var(--neon-pink);
+    text-shadow: 0 0 15px var(--neon-pink);
+}
+
+.stage-warning {
+    font-size: 1rem;
+    color: #ff4444;
+    text-shadow: 0 0 15px #ff4444;
+    font-weight: bold;
+}
+
+@keyframes stage-icon-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes stage-number-glow {
+    0% { text-shadow: 0 0 30px var(--neon-yellow); }
+    100% { text-shadow: 0 0 40px var(--neon-yellow), 0 0 60px var(--neon-yellow); }
+}
+
+/* ゲーム通知システム */
+.game-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 12000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+    max-width: 300px;
+}
+
+.game-notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.game-notification.fade-out {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 12px;
+    border: 2px solid;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.notification-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.notification-message {
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #ffffff;
+}
+
+/* 通知タイプ別スタイル */
+.notification-info .notification-content {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.notification-success .notification-content {
+    border-color: var(--neon-green);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+.notification-warning .notification-content {
+    border-color: #ffa500;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 165, 0, 0.2);
+}
+
+.notification-error .notification-content {
+    border-color: #ff4444;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 68, 68, 0.2);
+}
+
+.notification-skill .notification-content {
+    border-color: var(--neon-pink);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 20, 147, 0.2);
+}
+
+.notification-fever .notification-content {
+    border-color: #ff6b35;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 107, 53, 0.3);
+    animation: fever-pulse 1s ease-in-out infinite alternate;
+}
+
+.notification-miracle .notification-content {
+    border-color: var(--neon-yellow);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 0, 0.3);
+    animation: miracle-sparkle 2s ease-in-out infinite;
+}
+
+.notification-game-over .notification-content {
+    border-color: #8b0000;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(139, 0, 0, 0.3);
+}
+
+@keyframes fever-pulse {
+    0% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 107, 53, 0.3); }
+    100% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 25px rgba(255, 107, 53, 0.5); }
+}
+
+@keyframes miracle-sparkle {
+    0%, 100% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 0, 0.3); }
+    50% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 255, 0, 0.6); }
+}
+
+/* モバイル対応 */
+@media (max-width: 480px) {
+    .game-notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .notification-content {
+        padding: 0.75rem 1rem;
+    }
+
+    .notification-icon {
+        font-size: 1.25rem;
+    }
+
+    .notification-message {
+        font-size: 0.8rem;
+    }
 }
 
 /* モーダル */

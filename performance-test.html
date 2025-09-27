@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON RUSH - パフォーマンステスト (Team E)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            background: #1a1a1a;
+        }
+        .pass { background: #004400; }
+        .fail { background: #440000; }
+        .warning { background: #444400; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #666;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #555;
+        }
+        #fps-monitor {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎰 NEON RUSH - モバイルパフォーマンステスト</h1>
+    <p><strong>Team E: モバイル・パフォーマンスチーム</strong></p>
+
+    <div id="fps-monitor">
+        FPS: <span id="fps-value">--</span><br>
+        メモリ: <span id="memory-value">--</span>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 デバイス検出テスト</h2>
+        <div id="device-info"></div>
+        <button onclick="testDeviceDetection()">デバイス情報取得</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📱 モバイル最適化テスト</h2>
+        <div id="mobile-tests"></div>
+        <button onclick="testMobileOptimizations()">モバイル最適化確認</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🎯 タッチ操作テスト</h2>
+        <div id="touch-tests"></div>
+        <div id="touch-area" style="width: 200px; height: 100px; background: #333; border: 2px solid #666; margin: 10px 0; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            タッチしてください
+        </div>
+        <button onclick="testTouchOperations()">タッチ操作テスト開始</button>
+    </div>
+
+    <div class="test-section">
+        <h2>⚡ パフォーマンステスト</h2>
+        <div id="performance-tests"></div>
+        <button onclick="testPerformance()">パフォーマンス測定</button>
+        <button onclick="startStressTest()">ストレステスト開始</button>
+        <button onclick="stopStressTest()">ストレステスト停止</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🎨 アニメーション最適化テスト</h2>
+        <div id="animation-tests"></div>
+        <button onclick="testAnimations()">アニメーション最適化確認</button>
+    </div>
+
+    <div class="test-section">
+        <h2>🌐 ネットワーク対応テスト</h2>
+        <div id="network-tests"></div>
+        <button onclick="testNetworkOptimizations()">ネットワーク最適化確認</button>
+    </div>
+
+    <script>
+        class PerformanceTest {
+            constructor() {
+                this.frameCount = 0;
+                this.lastTime = performance.now();
+                this.fps = 0;
+                this.stressTestRunning = false;
+                this.animationElements = [];
+
+                this.startFPSMonitor();
+                this.setupTouchTest();
+            }
+
+            startFPSMonitor() {
+                const measure = () => {
+                    this.frameCount++;
+                    const currentTime = performance.now();
+
+                    if (currentTime - this.lastTime >= 1000) {
+                        this.fps = this.frameCount;
+                        this.frameCount = 0;
+                        this.lastTime = currentTime;
+
+                        document.getElementById('fps-value').textContent = this.fps;
+
+                        // メモリ使用量（対応ブラウザのみ）
+                        if (performance.memory) {
+                            const memory = Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
+                            document.getElementById('memory-value').textContent = memory + 'MB';
+                        }
+                    }
+
+                    requestAnimationFrame(measure);
+                };
+                measure();
+            }
+
+            setupTouchTest() {
+                const touchArea = document.getElementById('touch-area');
+                let touchCount = 0;
+                let lastTouchTime = 0;
+
+                touchArea.addEventListener('touchstart', (e) => {
+                    touchCount++;
+                    const currentTime = Date.now();
+                    const timeDiff = currentTime - lastTouchTime;
+
+                    touchArea.style.background = '#006600';
+                    touchArea.textContent = `タッチ ${touchCount}回目`;
+
+                    if (timeDiff < 300) {
+                        touchArea.textContent += ' (ダブルタップ)';
+                    }
+
+                    lastTouchTime = currentTime;
+
+                    // ハプティックフィードバックテスト
+                    if (navigator.vibrate) {
+                        navigator.vibrate([10]);
+                    }
+                }, { passive: false });
+
+                touchArea.addEventListener('touchend', () => {
+                    setTimeout(() => {
+                        touchArea.style.background = '#333';
+                        touchArea.textContent = 'タッチしてください';
+                    }, 500);
+                });
+
+                // マウスイベントも対応
+                touchArea.addEventListener('mousedown', (e) => {
+                    touchArea.style.background = '#006600';
+                    touchArea.textContent = 'クリック検出';
+                });
+
+                touchArea.addEventListener('mouseup', () => {
+                    setTimeout(() => {
+                        touchArea.style.background = '#333';
+                        touchArea.textContent = 'タッチしてください';
+                    }, 500);
+                });
+            }
+
+            addResult(containerId, text, status = 'pass') {
+                const container = document.getElementById(containerId);
+                const result = document.createElement('div');
+                result.className = `test-result ${status}`;
+                result.textContent = text;
+                container.appendChild(result);
+            }
+
+            testDeviceDetection() {
+                const container = document.getElementById('device-info');
+                container.innerHTML = '';
+
+                // User Agent
+                this.addResult('device-info', `User Agent: ${navigator.userAgent}`);
+
+                // 画面サイズ
+                this.addResult('device-info', `画面サイズ: ${window.innerWidth}x${window.innerHeight}`);
+
+                // デバイスピクセル比
+                this.addResult('device-info', `デバイスピクセル比: ${window.devicePixelRatio || 1}`);
+
+                // タッチサポート
+                const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                this.addResult('device-info', `タッチサポート: ${hasTouch ? 'あり' : 'なし'}`, hasTouch ? 'pass' : 'warning');
+
+                // メモリ情報（対応ブラウザのみ）
+                if (navigator.deviceMemory) {
+                    this.addResult('device-info', `デバイスメモリ: ${navigator.deviceMemory}GB`);
+                }
+
+                // ネットワーク情報
+                if (navigator.connection) {
+                    const conn = navigator.connection;
+                    this.addResult('device-info', `接続タイプ: ${conn.effectiveType || 'unknown'}`);
+                    this.addResult('device-info', `推定帯域幅: ${conn.downlink || 'unknown'}Mbps`);
+                }
+
+                // モバイル判定
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+                this.addResult('device-info', `モバイル判定: ${isMobile ? 'モバイル' : 'デスクトップ'}`, isMobile ? 'pass' : 'warning');
+            }
+
+            testMobileOptimizations() {
+                const container = document.getElementById('mobile-tests');
+                container.innerHTML = '';
+
+                // タップハイライト無効化確認
+                const body = document.body;
+                const tapHighlight = getComputedStyle(body).webkitTapHighlightColor;
+                this.addResult('mobile-tests', `タップハイライト: ${tapHighlight === 'rgba(0, 0, 0, 0)' ? '無効' : '有効'}`, tapHighlight === 'rgba(0, 0, 0, 0)' ? 'pass' : 'warning');
+
+                // タッチアクション確認
+                const touchAction = getComputedStyle(body).touchAction;
+                this.addResult('mobile-tests', `タッチアクション: ${touchAction}`);
+
+                // ビューポート設定確認
+                const viewport = document.querySelector('meta[name="viewport"]');
+                this.addResult('mobile-tests', `ビューポート設定: ${viewport ? 'あり' : 'なし'}`, viewport ? 'pass' : 'fail');
+
+                // CSS変数確認
+                const cssVh = getComputedStyle(document.documentElement).getPropertyValue('--vh');
+                this.addResult('mobile-tests', `iOS Safari対応: ${cssVh ? 'あり' : 'なし'}`, cssVh ? 'pass' : 'warning');
+
+                // パフォーマンスクラス確認
+                const hasPerformanceClass = body.classList.contains('performance-low') || body.classList.contains('performance-normal');
+                this.addResult('mobile-tests', `パフォーマンスクラス: ${hasPerformanceClass ? 'あり' : 'なし'}`, hasPerformanceClass ? 'pass' : 'warning');
+            }
+
+            testTouchOperations() {
+                const container = document.getElementById('touch-tests');
+                container.innerHTML = '';
+
+                this.addResult('touch-tests', 'タッチエリアでタッチ、ロングタップ、ダブルタップをテストしてください');
+
+                // ハプティックフィードバック対応確認
+                const hasVibration = 'vibrate' in navigator;
+                this.addResult('touch-tests', `ハプティックフィードバック: ${hasVibration ? '対応' : '非対応'}`, hasVibration ? 'pass' : 'warning');
+
+                // タッチイベント対応確認
+                const hasTouch = 'ontouchstart' in window;
+                this.addResult('touch-tests', `タッチイベント: ${hasTouch ? '対応' : '非対応'}`, hasTouch ? 'pass' : 'warning');
+
+                // ポインターイベント対応確認
+                const hasPointer = 'onpointerdown' in window;
+                this.addResult('touch-tests', `ポインターイベント: ${hasPointer ? '対応' : '非対応'}`, hasPointer ? 'pass' : 'warning');
+            }
+
+            testPerformance() {
+                const container = document.getElementById('performance-tests');
+                container.innerHTML = '';
+
+                // パフォーマンス測定
+                const startTime = performance.now();
+
+                // DOM操作性能テスト
+                const testElement = document.createElement('div');
+                document.body.appendChild(testElement);
+
+                for (let i = 0; i < 1000; i++) {
+                    testElement.style.left = `${i}px`;
+                }
+
+                const domTime = performance.now() - startTime;
+                document.body.removeChild(testElement);
+
+                this.addResult('performance-tests', `DOM操作性能: ${domTime.toFixed(2)}ms`, domTime < 10 ? 'pass' : domTime < 50 ? 'warning' : 'fail');
+
+                // FPS確認
+                this.addResult('performance-tests', `現在のFPS: ${this.fps}`, this.fps >= 30 ? 'pass' : this.fps >= 15 ? 'warning' : 'fail');
+
+                // メモリ使用量確認
+                if (performance.memory) {
+                    const memory = performance.memory.usedJSHeapSize / 1024 / 1024;
+                    this.addResult('performance-tests', `メモリ使用量: ${memory.toFixed(2)}MB`, memory < 50 ? 'pass' : memory < 100 ? 'warning' : 'fail');
+                }
+
+                // requestAnimationFrame精度テスト
+                let rafCount = 0;
+                const rafStart = performance.now();
+
+                const rafTest = () => {
+                    rafCount++;
+                    if (rafCount < 60) {
+                        requestAnimationFrame(rafTest);
+                    } else {
+                        const rafTime = performance.now() - rafStart;
+                        const expectedTime = 1000; // 60フレーム = 約1秒
+                        const accuracy = Math.abs(rafTime - expectedTime) / expectedTime * 100;
+                        this.addResult('performance-tests', `RAF精度: ${accuracy.toFixed(2)}%差`, accuracy < 5 ? 'pass' : accuracy < 15 ? 'warning' : 'fail');
+                    }
+                };
+                rafTest();
+            }
+
+            startStressTest() {
+                if (this.stressTestRunning) return;
+
+                this.stressTestRunning = true;
+                const container = document.getElementById('performance-tests');
+
+                // 大量のアニメーション要素を作成
+                for (let i = 0; i < 50; i++) {
+                    const element = document.createElement('div');
+                    element.style.cssText = `
+                        position: absolute;
+                        width: 10px;
+                        height: 10px;
+                        background: hsl(${i * 7}, 70%, 50%);
+                        border-radius: 50%;
+                        left: ${Math.random() * window.innerWidth}px;
+                        top: ${Math.random() * window.innerHeight}px;
+                        z-index: -1;
+                        animation: stress-move 2s linear infinite;
+                    `;
+                    document.body.appendChild(element);
+                    this.animationElements.push(element);
+                }
+
+                // CSS アニメーション定義
+                if (!document.getElementById('stress-css')) {
+                    const style = document.createElement('style');
+                    style.id = 'stress-css';
+                    style.textContent = `
+                        @keyframes stress-move {
+                            0% { transform: translate(0, 0) rotate(0deg); }
+                            25% { transform: translate(100px, 100px) rotate(90deg); }
+                            50% { transform: translate(-100px, 100px) rotate(180deg); }
+                            75% { transform: translate(-100px, -100px) rotate(270deg); }
+                            100% { transform: translate(0, 0) rotate(360deg); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                this.addResult('performance-tests', 'ストレステスト開始 - FPSを監視してください', 'warning');
+            }
+
+            stopStressTest() {
+                if (!this.stressTestRunning) return;
+
+                this.stressTestRunning = false;
+
+                // アニメーション要素を削除
+                this.animationElements.forEach(element => {
+                    if (element.parentNode) {
+                        element.parentNode.removeChild(element);
+                    }
+                });
+                this.animationElements = [];
+
+                // CSS削除
+                const stressCss = document.getElementById('stress-css');
+                if (stressCss) {
+                    stressCss.remove();
+                }
+
+                this.addResult('performance-tests', 'ストレステスト終了', 'pass');
+            }
+
+            testAnimations() {
+                const container = document.getElementById('animation-tests');
+                container.innerHTML = '';
+
+                // CSS変数確認
+                const root = getComputedStyle(document.documentElement);
+                const animSpeed = root.getPropertyValue('--animation-speed-multiplier');
+                this.addResult('animation-tests', `アニメーション速度設定: ${animSpeed || 'デフォルト'}`);
+
+                // GPU加速確認
+                const testEl = document.createElement('div');
+                testEl.style.transform = 'translateZ(0)';
+                const hasGPU = testEl.style.transform === 'translateZ(0)';
+                this.addResult('animation-tests', `GPU加速サポート: ${hasGPU ? 'あり' : 'なし'}`, hasGPU ? 'pass' : 'warning');
+
+                // Reduced Motion確認
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                this.addResult('animation-tests', `モーション削減設定: ${prefersReducedMotion ? 'ON' : 'OFF'}`, prefersReducedMotion ? 'warning' : 'pass');
+
+                // Transition サポート確認
+                const hasTransition = 'transition' in testEl.style;
+                this.addResult('animation-tests', `CSS Transition: ${hasTransition ? '対応' : '非対応'}`, hasTransition ? 'pass' : 'fail');
+
+                // Animation サポート確認
+                const hasAnimation = 'animation' in testEl.style;
+                this.addResult('animation-tests', `CSS Animation: ${hasAnimation ? '対応' : '非対応'}`, hasAnimation ? 'pass' : 'fail');
+            }
+
+            testNetworkOptimizations() {
+                const container = document.getElementById('network-tests');
+                container.innerHTML = '';
+
+                // Service Worker確認
+                const hasSW = 'serviceWorker' in navigator;
+                this.addResult('network-tests', `Service Worker: ${hasSW ? '対応' : '非対応'}`, hasSW ? 'pass' : 'warning');
+
+                // オンライン状態確認
+                this.addResult('network-tests', `オンライン状態: ${navigator.onLine ? 'オンライン' : 'オフライン'}`, navigator.onLine ? 'pass' : 'warning');
+
+                // キャッシュ確認
+                const hasCache = 'caches' in window;
+                this.addResult('network-tests', `Cache API: ${hasCache ? '対応' : '非対応'}`, hasCache ? 'pass' : 'warning');
+
+                // ネットワーク情報
+                if (navigator.connection) {
+                    const conn = navigator.connection;
+                    const isSlowConnection = conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g';
+                    this.addResult('network-tests', `接続速度: ${conn.effectiveType}`, isSlowConnection ? 'warning' : 'pass');
+
+                    if (conn.saveData) {
+                        this.addResult('network-tests', 'データセーバーモード: ON', 'warning');
+                    }
+                }
+
+                // 低データモード確認
+                const prefersReducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
+                this.addResult('network-tests', `低データモード: ${prefersReducedData ? 'ON' : 'OFF'}`, prefersReducedData ? 'warning' : 'pass');
+            }
+        }
+
+        // テスト開始
+        const performanceTest = new PerformanceTest();
+
+        // グローバル関数
+        window.testDeviceDetection = () => performanceTest.testDeviceDetection();
+        window.testMobileOptimizations = () => performanceTest.testMobileOptimizations();
+        window.testTouchOperations = () => performanceTest.testTouchOperations();
+        window.testPerformance = () => performanceTest.testPerformance();
+        window.startStressTest = () => performanceTest.startStressTest();
+        window.stopStressTest = () => performanceTest.stopStressTest();
+        window.testAnimations = () => performanceTest.testAnimations();
+        window.testNetworkOptimizations = () => performanceTest.testNetworkOptimizations();
+
+        // 自動テスト実行
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                performanceTest.testDeviceDetection();
+                performanceTest.testMobileOptimizations();
+            }, 1000);
+        });
+
+        console.log('🎰 NEON RUSH - パフォーマンステストツール (Team E) 準備完了');
+    </script>
+</body>
+</html>

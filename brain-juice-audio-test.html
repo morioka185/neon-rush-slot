@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠💊 NEON RUSH - 脳汁MAXオーディオテスト</title>
+    <style>
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background: linear-gradient(45deg, #0a0a0a, #1a0a1a, #0a1a0a);
+            background-size: 400% 400%;
+            animation: bgShift 4s ease infinite;
+            color: #fff;
+            padding: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+
+        @keyframes bgShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff0080, #00ffff, #ff8000);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titlePulse 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .warning {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff4444;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+            animation: warningBlink 2s infinite;
+        }
+
+        @keyframes warningBlink {
+            0%, 50% { border-color: #ff4444; }
+            51%, 100% { border-color: #ff8888; }
+        }
+
+        .test-section {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .test-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5);
+        }
+
+        .test-section h2 {
+            color: #00ffff;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .test-btn {
+            background: linear-gradient(45deg, #ff0080, #00ffff);
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 0, 128, 0.3);
+        }
+
+        .test-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 0, 128, 0.5);
+            animation: buttonGlow 0.5s ease;
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { box-shadow: 0 8px 25px rgba(255, 0, 128, 0.5); }
+            50% { box-shadow: 0 8px 35px rgba(0, 255, 255, 0.7); }
+        }
+
+        .test-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .mega-btn {
+            background: linear-gradient(45deg, #ff0080, #00ffff, #ff8000, #80ff00);
+            background-size: 400% 400%;
+            animation: megaBtnShift 2s ease infinite;
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        @keyframes megaBtnShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #666;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .volume-control label {
+            color: #00ffff;
+            font-weight: bold;
+            min-width: 80px;
+        }
+
+        .volume-control input[type="range"] {
+            flex: 1;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .volume-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #ff0080, #00ffff);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+        }
+
+        .euphoria-meter {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff0080;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .euphoria-bar {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .euphoria-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff0080, #00ffff, #ff8000);
+            background-size: 400% 400%;
+            animation: euphoriaFlow 1s ease infinite;
+            width: 0%;
+            transition: width 2s ease;
+        }
+
+        @keyframes euphoriaFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .brain-emoji {
+            font-size: 3rem;
+            animation: brainPulse 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes brainPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(5deg); }
+        }
+
+        .auto-play {
+            background: rgba(255, 128, 0, 0.2);
+            border: 2px solid #ff8000;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .danger-zone {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .spinner {
+            display: none;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #333;
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>🧠💊 NEON RUSH - 脳汁MAXオーディオテスト</h1>
+
+    <div class="warning">
+        <h3>⚠️ 警告 ⚠️</h3>
+        <p>このテストは極めて中毒性の高い音響効果を含みます。</p>
+        <p>長時間の使用はドーパミン依存症のリスクがあります。</p>
+        <p><strong>適度な使用を心がけてください。</strong></p>
+    </div>
+
+    <div class="euphoria-meter">
+        <h3>🧠 脳汁レベルメーター <span class="brain-emoji">🧠</span></h3>
+        <div class="euphoria-bar">
+            <div class="euphoria-fill" id="euphoria-fill"></div>
+        </div>
+        <p id="euphoria-level">レベル: 0% (正常)</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 オーディオシステム状態</h2>
+        <button class="test-btn" onclick="updateStatus()">システム状態更新</button>
+        <div class="spinner" id="loading-spinner"></div>
+        <div class="status" id="status">初期化中...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎰 スロット効果音（脳汁誘発レベル: 🧠🧠🧠）</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="testSound('spin')">🎰 スピン音 (高揚感)</button>
+            <button class="test-btn" onclick="testSound('reelStop')">⏹️ リール停止 (満足感)</button>
+            <button class="test-btn" onclick="testSound('win')">🎉 小当たり (快感)</button>
+            <button class="test-btn mega-btn" onclick="testSound('bigWin')">💰 大当たり (興奮)</button>
+            <button class="test-btn mega-btn" onclick="testSound('jackpot')">🏆 ジャックポット (恍惚)</button>
+            <button class="test-btn" onclick="testSound('coinDrop')">🪙 コイン獲得 (達成感)</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>✨ スキル効果音（脳汁誘発レベル: 🧠🧠🧠🧠）</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="testSound('skillActivate')">⚡ スキル発動 (パワー感)</button>
+            <button class="test-btn" onclick="testSound('timeFreeze')">⏱️ タイムフリーズ (支配感)</button>
+            <button class="test-btn" onclick="testSound('futureVision')">👁️ フューチャービジョン (万能感)</button>
+            <button class="test-btn mega-btn" onclick="testSound('miracleSpin')">✨ ミラクルスピン (全能感)</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎵 UI効果音（脳汁誘発レベル: 🧠🧠）</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="testSound('buttonClick')">🖱️ ボタンクリック (操作感)</button>
+            <button class="test-btn" onclick="testSound('betChange')">💱 ベット変更 (調整感)</button>
+            <button class="test-btn" onclick="testSound('stageUp')">🎊 ステージアップ (進歩感)</button>
+            <button class="test-btn" onclick="testSound('gameOver')">💀 ゲームオーバー (絶望感)</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎶 背景音楽（脳汁誘発レベル: 🧠🧠🧠🧠🧠）</h2>
+        <div class="controls">
+            <button class="test-btn mega-btn" onclick="playMusic('bgmStage1')">🌟 ステージ1 BGM (希望)</button>
+            <button class="test-btn mega-btn" onclick="playMusic('bgmStage2')">⭐ ステージ2 BGM (興奮)</button>
+            <button class="test-btn mega-btn" onclick="playMusic('bgmStage3')">✨ ステージ3 BGM (恍惚)</button>
+            <button class="test-btn" onclick="stopMusic()">⏹️ 音楽停止</button>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🎛️ ボリュームコントロール</h2>
+        <div class="controls">
+            <div class="volume-control">
+                <label>Master:</label>
+                <input type="range" id="masterVolume" min="0" max="100" value="100"
+                       onchange="setVolume('master', this.value)">
+                <span id="masterValue">100%</span>
+            </div>
+            <div class="volume-control">
+                <label>SFX:</label>
+                <input type="range" id="sfxVolume" min="0" max="100" value="80"
+                       onchange="setVolume('sfx', this.value)">
+                <span id="sfxValue">80%</span>
+            </div>
+            <div class="volume-control">
+                <label>Music:</label>
+                <input type="range" id="musicVolume" min="0" max="100" value="60"
+                       onchange="setVolume('music', this.value)">
+                <span id="musicValue">60%</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="auto-play">
+        <h3>🎯 自動ドーパミン刺激モード</h3>
+        <button class="test-btn mega-btn" onclick="startAutoStimulation()">🧠💊 自動脳汁モード開始</button>
+        <button class="test-btn" onclick="stopAutoStimulation()">⏹️ 停止</button>
+        <p>定期的に勝利音とキラキラ効果を再生して持続的な快感を提供します。</p>
+    </div>
+
+    <div class="danger-zone">
+        <h3>💊 危険地帯 💊</h3>
+        <button class="test-btn mega-btn" onclick="brainJuiceOverdose()">🧠💥 脳汁オーバードーズ</button>
+        <p><strong>警告:</strong> 全ての効果音と音楽を同時再生します。中毒性極大。</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🔇 オーディオコントロール</h2>
+        <div class="controls">
+            <button class="test-btn" onclick="toggleMute()">🔇/🔊 ミュート切り替え</button>
+            <button class="test-btn" onclick="toggleSFX()">🔇/🔊 効果音切り替え</button>
+            <button class="test-btn" onclick="toggleMusic()">🔇/🔊 音楽切り替え</button>
+            <button class="test-btn" onclick="stopAll()">⏹️ 全音停止</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { AudioManager } from './js/audio/AudioManager.js';
+
+        let audioManager = null;
+        let euphoriaLevel = 0;
+        let autoStimulationInterval = null;
+
+        async function initAudio() {
+            try {
+                document.getElementById('loading-spinner').style.display = 'block';
+                audioManager = new AudioManager();
+                await audioManager.init();
+                updateStatus();
+                console.log('🧠💊 脳汁MAXオーディオシステム初期化完了');
+            } catch (error) {
+                console.error('初期化エラー:', error);
+                document.getElementById('status').innerHTML = `❌ 初期化失敗: ${error.message}`;
+            } finally {
+                document.getElementById('loading-spinner').style.display = 'none';
+            }
+        }
+
+        window.testSound = function(soundName) {
+            if (audioManager) {
+                console.log(`🎵 Testing sound: ${soundName}`);
+                audioManager.playSFX(soundName);
+
+                // 脳汁レベル上昇
+                increaseBrainJuice(soundName);
+            }
+        };
+
+        window.playMusic = function(musicName) {
+            if (audioManager) {
+                console.log(`🎶 Playing music: ${musicName}`);
+                audioManager.playBackgroundMusic(musicName);
+                increaseBrainJuice('bgm', 20);
+            }
+        };
+
+        window.stopMusic = function() {
+            if (audioManager) {
+                audioManager.stopBackgroundMusic();
+            }
+        };
+
+        window.setVolume = function(type, value) {
+            if (!audioManager) return;
+
+            const volume = value / 100;
+
+            switch(type) {
+                case 'master':
+                    audioManager.setMasterVolume(volume);
+                    document.getElementById('masterValue').textContent = `${value}%`;
+                    break;
+                case 'sfx':
+                    audioManager.setSFXVolume(volume);
+                    document.getElementById('sfxValue').textContent = `${value}%`;
+                    break;
+                case 'music':
+                    audioManager.setMusicVolume(volume);
+                    document.getElementById('musicValue').textContent = `${value}%`;
+                    break;
+            }
+        };
+
+        window.toggleMute = function() {
+            if (audioManager) {
+                const isMuted = audioManager.toggleMute();
+                console.log(`🔇 Mute: ${isMuted}`);
+            }
+        };
+
+        window.toggleSFX = function() {
+            if (audioManager) {
+                const status = audioManager.getStatus();
+                audioManager.enableSFXSounds(!status.enableSFX);
+                console.log(`🔊 SFX enabled: ${!status.enableSFX}`);
+            }
+        };
+
+        window.toggleMusic = function() {
+            if (audioManager) {
+                const status = audioManager.getStatus();
+                audioManager.enableBackgroundMusic(!status.enableMusic);
+                console.log(`🎵 Music enabled: ${!status.enableMusic}`);
+            }
+        };
+
+        window.stopAll = function() {
+            if (audioManager) {
+                audioManager.stopAllSounds();
+                euphoriaLevel = 0;
+                updateEuphoriaDisplay();
+            }
+        };
+
+        window.updateStatus = function() {
+            if (audioManager) {
+                const status = audioManager.getStatus();
+                document.getElementById('status').innerHTML = `
+<strong>🧠💊 脳汁MAXオーディオシステム状態:</strong><br>
+初期化: ${status.isInitialized ? '✅ 完了' : '❌ 未完了'}<br>
+ミュート: ${status.isMuted ? '🔇 ON' : '🔊 OFF'}<br>
+マスターボリューム: ${Math.round(status.masterVolume * 100)}%<br>
+効果音ボリューム: ${Math.round(status.sfxVolume * 100)}%<br>
+音楽ボリューム: ${Math.round(status.musicVolume * 100)}%<br>
+効果音有効: ${status.enableSFX ? '✅' : '❌'}<br>
+音楽有効: ${status.enableMusic ? '✅' : '❌'}<br>
+背景音楽: ${status.backgroundMusic || 'なし'}<br>
+アクティブ音源: ${status.activeSources}<br>
+ロード済み音声: ${status.loadedSounds}<br>
+フォールバック音声: ${status.fallbackSounds}<br>
+合成音モード: ${audioManager.useSynthetic ? '🧠 ON' : 'OFF'}<br>
+現在の脳汁レベル: ${euphoriaLevel}%
+                `;
+            }
+        };
+
+        // 脳汁レベル管理
+        function increaseBrainJuice(soundType, customAmount = null) {
+            const increases = {
+                'buttonClick': 2,
+                'betChange': 3,
+                'spin': 5,
+                'reelStop': 4,
+                'win': 10,
+                'bigWin': 25,
+                'jackpot': 50,
+                'coinDrop': 8,
+                'skillActivate': 15,
+                'timeFreeze': 20,
+                'futureVision': 18,
+                'miracleSpin': 35,
+                'stageUp': 20,
+                'bgm': 20
+            };
+
+            const increase = customAmount || increases[soundType] || 5;
+            euphoriaLevel = Math.min(100, euphoriaLevel + increase);
+            updateEuphoriaDisplay();
+
+            // 自然減衰
+            setTimeout(() => {
+                euphoriaLevel = Math.max(0, euphoriaLevel - increase * 0.3);
+                updateEuphoriaDisplay();
+            }, 3000);
+        }
+
+        function updateEuphoriaDisplay() {
+            const fill = document.getElementById('euphoria-fill');
+            const level = document.getElementById('euphoria-level');
+
+            fill.style.width = `${euphoriaLevel}%`;
+
+            let status = '正常';
+            if (euphoriaLevel > 20) status = '軽い快感';
+            if (euphoriaLevel > 40) status = '中程度の快感';
+            if (euphoriaLevel > 60) status = '強い快感';
+            if (euphoriaLevel > 80) status = '⚠️ 中毒レベル';
+            if (euphoriaLevel > 95) status = '🚨 危険レベル';
+
+            level.textContent = `レベル: ${Math.round(euphoriaLevel)}% (${status})`;
+        }
+
+        // 自動刺激モード
+        window.startAutoStimulation = function() {
+            if (autoStimulationInterval) {
+                clearInterval(autoStimulationInterval);
+            }
+
+            const sounds = ['win', 'coinDrop', 'bigWin', 'miracleSpin'];
+            let index = 0;
+
+            autoStimulationInterval = setInterval(() => {
+                if (audioManager) {
+                    const sound = sounds[index % sounds.length];
+                    audioManager.playSFX(sound);
+                    increaseBrainJuice(sound);
+                    index++;
+
+                    // たまにビッグウィン
+                    if (Math.random() < 0.3) {
+                        setTimeout(() => {
+                            audioManager.playSFX('bigWin');
+                            increaseBrainJuice('bigWin');
+                        }, 500);
+                    }
+                }
+            }, 2000);
+
+            console.log('🧠💊 自動脳汁モード開始');
+        };
+
+        window.stopAutoStimulation = function() {
+            if (autoStimulationInterval) {
+                clearInterval(autoStimulationInterval);
+                autoStimulationInterval = null;
+                console.log('🛑 自動脳汁モード停止');
+            }
+        };
+
+        // 脳汁オーバードーズ
+        window.brainJuiceOverdose = function() {
+            if (!audioManager) return;
+
+            console.log('🧠💥 脳汁オーバードーズ開始！');
+
+            // 背景音楽開始
+            audioManager.playBackgroundMusic('bgmStage3');
+
+            // 多重効果音爆撃
+            const overdoseSounds = [
+                'jackpot', 'bigWin', 'miracleSpin', 'timeFreeze',
+                'futureVision', 'skillActivate', 'coinDrop'
+            ];
+
+            overdoseSounds.forEach((sound, index) => {
+                setTimeout(() => {
+                    audioManager.playSFX(sound);
+                    increaseBrainJuice(sound);
+                }, index * 200);
+            });
+
+            // 継続的キラキラ効果
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    audioManager.playSFX('win');
+                    increaseBrainJuice('win');
+                }, 1000 + i * 300);
+            }
+
+            // 警告表示
+            alert('🧠💥 脳汁オーバードーズ実行！中毒性注意！');
+        };
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', initAudio);
+
+        // 脳汁レベルの定期更新
+        setInterval(updateEuphoriaDisplay, 100);
+    </script>
+</body>
+</html>

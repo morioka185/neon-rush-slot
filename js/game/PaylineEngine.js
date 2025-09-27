@@ -1,4 +1,4 @@
-class PaylineEngine {
+export class PaylineEngine {
   constructor() {
     this.paylines = [
       [[0,0], [1,0], [2,0]], // 横上
@@ -246,6 +246,23 @@ class PaylineEngine {
 
     return expectedReturn;
   }
+
+  // 修正：不足していたメソッドを追加
+  getTotalPayout(wins, bet, multiplier = 1.0) {
+    if (!wins || wins.length === 0) {
+      return 0;
+    }
+
+    const totalPayout = wins.reduce((sum, win) => {
+      return sum + (win.payout * bet * multiplier);
+    }, 0);
+
+    return Math.floor(totalPayout);
+  }
+
+  // main.jsとの互換性のためのエイリアス
+  highlightWinLines(wins) {
+    return this.highlightWinningLines(wins);
+  }
 }
 
-export default PaylineEngine;

@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0a0a0a">
-    <title>NEON RUSH - 10,000 RUSH</title>
+    <title>🎰 NEON RUSH - 10,000 RUSH | Team B Design</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎰</text></svg>">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="game-container">
+<body class="stage-1">
+    <div class="game-container stage-1" id="gameContainer">
         <!-- ヘッダー部分 -->
         <header class="header">
             <div class="header-content">
@@ -21,6 +26,17 @@
                 <div class="stage-info">
                     <span class="stage-label">STAGE</span>
                     <span class="stage-number" id="stage-display">1</span>
+                </div>
+                <div class="audio-controls">
+                    <button class="audio-btn" id="mute-btn" aria-label="音声ミュート切り替え" title="音声ミュート">
+                        <span class="audio-icon" id="audio-icon">🔊</span>
+                    </button>
+                    <button class="audio-btn" id="audio-settings-btn" aria-label="音声設定" title="音声設定">
+                        <span class="audio-icon">⚙️</span>
+                    </button>
+                    <button class="audio-btn" id="reset-btn" aria-label="ゲームリセット" title="ゲームリセット">
+                        <span class="audio-icon">🔄</span>
+                    </button>
                 </div>
             </div>
         </header>
@@ -67,38 +83,41 @@
             <!-- コントロールパネル -->
             <section class="control-panel">
                 <!-- ベット選択 -->
-                <div class="bet-controls">
-                    <button class="bet-btn" data-bet="100">100</button>
-                    <button class="bet-btn" data-bet="500">500</button>
-                    <button class="bet-btn" data-bet="1000">1K</button>
-                    <button class="bet-btn" data-bet="5000">5K</button>
-                    <button class="bet-btn" data-bet="10000">10K</button>
-                    <button class="bet-btn all-in" data-bet="max">ALL IN</button>
+                <div class="bet-controls" role="group" aria-label="ベット金額選択">
+                    <button class="bet-btn" data-bet="100" aria-label="100コインベット" role="button">100</button>
+                    <button class="bet-btn" data-bet="500" aria-label="500コインベット" role="button">500</button>
+                    <button class="bet-btn" data-bet="1000" aria-label="1000コインベット" role="button">1K</button>
+                    <button class="bet-btn" data-bet="5000" aria-label="5000コインベット" role="button">5K</button>
+                    <button class="bet-btn" data-bet="10000" aria-label="10000コインベット" role="button">10K</button>
+                    <button class="bet-btn all-in" data-bet="max" aria-label="全額ベット" role="button">ALL IN</button>
                 </div>
 
                 <!-- スピンボタン -->
                 <div class="spin-control">
-                    <button class="spin-btn neon-button" id="spin-button">
+                    <button class="spin-btn neon-button" id="spin-button" aria-label="スロットを回転させる" role="button">
                         <span class="spin-text">SPIN</span>
+                    </button>
+                    <button class="auto-spin-btn" id="auto-spin-button" aria-label="オートスピンを開始/停止" role="button">
+                        <span class="auto-spin-text">AUTO</span>
                     </button>
                 </div>
 
                 <!-- スキルボタン -->
                 <div class="skill-controls">
-                    <button class="skill-btn" id="time-freeze-btn" data-skill="timeFreeze">
-                        <span class="skill-icon">⏱️</span>
+                    <button class="skill-btn" id="time-freeze-btn" data-skill="timeFreeze" aria-label="タイムフリーズスキルを使用" role="button">
+                        <span class="skill-icon" aria-hidden="true">⏱️</span>
                         <span class="skill-name">TIME<br>FREEZE</span>
-                        <span class="skill-count" id="time-freeze-count">1</span>
+                        <span class="skill-count" id="time-freeze-count" aria-label="残り回数">1</span>
                     </button>
-                    <button class="skill-btn" id="future-vision-btn" data-skill="futureVision">
-                        <span class="skill-icon">👁️</span>
+                    <button class="skill-btn" id="future-vision-btn" data-skill="futureVision" aria-label="フューチャービジョンスキルを使用" role="button">
+                        <span class="skill-icon" aria-hidden="true">👁️</span>
                         <span class="skill-name">FUTURE<br>VISION</span>
-                        <span class="skill-count" id="future-vision-count">1</span>
+                        <span class="skill-count" id="future-vision-count" aria-label="残り回数">1</span>
                     </button>
-                    <button class="skill-btn" id="miracle-spin-btn" data-skill="miracleSpin">
-                        <span class="skill-icon">✨</span>
+                    <button class="skill-btn" id="miracle-spin-btn" data-skill="miracleSpin" aria-label="ミラクルスピンスキルを使用" role="button">
+                        <span class="skill-icon" aria-hidden="true">✨</span>
                         <span class="skill-name">MIRACLE<br>SPIN</span>
-                        <span class="skill-count" id="miracle-spin-count">1</span>
+                        <span class="skill-count" id="miracle-spin-count" aria-label="残り回数">1</span>
                     </button>
                 </div>
             </section>
@@ -113,6 +132,9 @@
                         <div class="heat-fill" id="heat-fill" style="width: 0%"></div>
                     </div>
                 </div>
+                <div class="consecutive-losses-display" id="consecutive-losses-display" style="display: none;">
+                    連続外れ: 0/10
+                </div>
             </div>
         </footer>
     </div>
@@ -121,6 +143,65 @@
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-content" id="modal-content">
             <!-- モーダルコンテンツは動的に生成 -->
+        </div>
+    </div>
+
+    <!-- オーディオ設定モーダル -->
+    <div class="modal-overlay" id="audio-modal-overlay" style="display: none;">
+        <div class="modal-content audio-settings-modal">
+            <div class="modal-header">
+                <h3>🎵 音声設定</h3>
+                <button class="close-btn" id="audio-modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="master-volume">マスターボリューム</label>
+                    <div class="volume-control">
+                        <input type="range" id="master-volume" min="0" max="100" value="100">
+                        <span class="volume-value" id="master-volume-value">100%</span>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label for="sfx-volume">効果音ボリューム</label>
+                    <div class="volume-control">
+                        <input type="range" id="sfx-volume" min="0" max="100" value="80">
+                        <span class="volume-value" id="sfx-volume-value">80%</span>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label for="music-volume">音楽ボリューム</label>
+                    <div class="volume-control">
+                        <input type="range" id="music-volume" min="0" max="100" value="60">
+                        <span class="volume-value" id="music-volume-value">60%</span>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enable-sfx" checked>
+                            <span class="checkmark"></span>
+                            効果音を有効にする
+                        </label>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="enable-music" checked>
+                            <span class="checkmark"></span>
+                            背景音楽を有効にする
+                        </label>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <button class="test-btn" id="test-sound-btn">🎵 テスト音再生</button>
+                </div>
+            </div>
         </div>
     </div>
 

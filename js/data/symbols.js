@@ -1,12 +1,12 @@
 const symbols = [
-  { emoji: "🔷", weight: 5, payout: 100, name: "diamond" },   // 5%
-  { emoji: "⚡", weight: 8, payout: 50, name: "lightning" },  // 8%
-  { emoji: "🔥", weight: 10, payout: 30, name: "fire" },      // 10%
-  { emoji: "💎", weight: 12, payout: 20, name: "gem" },       // 12%
-  { emoji: "✨", weight: 15, payout: 10, name: "sparkle" },   // 15%
-  { emoji: "🌙", weight: 20, payout: 5, name: "moon" },       // 20%
-  { emoji: "7️⃣", weight: 3, payout: 200, name: "seven" },     // 3%
-  { emoji: "", weight: 27, payout: 0, name: "empty" }         // 27% ハズレ
+  { emoji: "🔷", weight: 4, payout: 100, name: "diamond" },   // 4% (5→4)
+  { emoji: "⚡", weight: 6, payout: 50, name: "lightning" },  // 6% (8→6)
+  { emoji: "🔥", weight: 8, payout: 30, name: "fire" },       // 8% (10→8)
+  { emoji: "💎", weight: 10, payout: 20, name: "gem" },       // 10% (12→10)
+  { emoji: "✨", weight: 12, payout: 10, name: "sparkle" },   // 12% (15→12)
+  { emoji: "🌙", weight: 16, payout: 5, name: "moon" },       // 16% (20→16)
+  { emoji: "7️⃣", weight: 2, payout: 200, name: "seven" },     // 2% (3→2)
+  { emoji: "", weight: 42, payout: 0, name: "empty" }         // 42% ハズレ (27→42)
 ];
 
 const getTotalWeight = () => {
