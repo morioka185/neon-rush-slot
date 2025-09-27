@@ -1,0 +1,496 @@
+/* ========================================
+   NEON RUSH - レスポンシブデザイン
+   基盤・インフラチーム作成
+   ======================================== */
+
+/* ========================================
+   基本レスポンシブ設定
+   ======================================== */
+
+/* デフォルト: 最適化されたモバイル表示 */
+@media (max-width: 320px) {
+    /* 超小型デバイス (iPhone SE等) */
+    .game-container {
+        font-size: 14px;
+    }
+
+    .header {
+        height: 50px;
+        padding: 0 0.5rem;
+    }
+
+    .game-title {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    .main-game {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .slot-grid {
+        max-width: 260px;
+        gap: 1px;
+        padding: 6px;
+    }
+
+    .symbol {
+        font-size: 1.5rem;
+        border-radius: 4px;
+    }
+
+    .bet-controls {
+        gap: 0.25rem;
+    }
+
+    .bet-btn {
+        padding: 0.4rem 0.2rem;
+        font-size: 0.7rem;
+    }
+
+    .spin-btn {
+        width: 100px;
+        height: 100px;
+        font-size: 1rem;
+    }
+
+    .skill-controls {
+        gap: 0.25rem;
+    }
+
+    .skill-btn {
+        padding: 0.4rem;
+        font-size: 0.5rem;
+    }
+
+    .skill-icon {
+        font-size: 1rem;
+    }
+
+    .footer {
+        height: 35px;
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    /* 小型モバイルデバイス */
+    .game-container {
+        font-size: 15px;
+    }
+
+    .header {
+        height: 55px;
+    }
+
+    .game-title {
+        font-size: 1.3rem;
+    }
+
+    .slot-grid {
+        max-width: 300px;
+        padding: 7px;
+    }
+
+    .symbol {
+        font-size: 2rem;
+    }
+
+    .spin-btn {
+        width: 110px;
+        height: 110px;
+        font-size: 1.1rem;
+    }
+
+    .bet-btn {
+        font-size: 0.75rem;
+    }
+
+    .skill-btn {
+        font-size: 0.55rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    /* 中型タブレット・大型スマホ */
+    .game-container {
+        font-size: 16px;
+    }
+
+    .header {
+        height: 60px;
+    }
+
+    .game-title {
+        font-size: 1.5rem;
+    }
+
+    .slot-grid {
+        max-width: 350px;
+    }
+
+    .symbol {
+        font-size: 2.5rem;
+    }
+
+    .spin-btn {
+        width: 120px;
+        height: 120px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* 大型タブレット */
+    .game-container {
+        font-size: 18px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .slot-grid {
+        max-width: 400px;
+    }
+
+    .symbol {
+        font-size: 3rem;
+    }
+
+    .spin-btn {
+        width: 140px;
+        height: 140px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* デスクトップ */
+    .game-container {
+        font-size: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+    }
+
+    .slot-grid {
+        max-width: 450px;
+    }
+
+    .symbol {
+        font-size: 3.5rem;
+    }
+
+    .spin-btn {
+        width: 160px;
+        height: 160px;
+        font-size: 1.4rem;
+    }
+
+    /* デスクトップでのホバー効果強化 */
+    .symbol:hover {
+        transform: scale(1.05);
+    }
+
+    .bet-btn:hover,
+    .skill-btn:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* ========================================
+   画面の高さに基づく調整
+   ======================================== */
+
+@media (max-height: 600px) {
+    /* 低い画面（横向きスマホ等） */
+    .header {
+        height: 40px;
+    }
+
+    .game-title {
+        font-size: 1.1rem;
+    }
+
+    .main-game {
+        gap: 0.5rem;
+    }
+
+    .slot-grid {
+        max-height: 35vh;
+    }
+
+    .spin-btn {
+        width: 80px;
+        height: 80px;
+        font-size: 0.9rem;
+    }
+
+    .footer {
+        height: 30px;
+    }
+
+    .info-panel {
+        padding: 0.25rem 0;
+    }
+
+    .skill-controls {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.25rem;
+    }
+
+    .skill-btn {
+        padding: 0.25rem;
+        font-size: 0.5rem;
+    }
+}
+
+@media (min-height: 800px) {
+    /* 高い画面 */
+    .main-game {
+        gap: 1.5rem;
+    }
+
+    .slot-area {
+        min-height: 350px;
+    }
+
+    .control-panel {
+        gap: 1.5rem;
+    }
+}
+
+/* ========================================
+   画面の向きに基づく調整
+   ======================================== */
+
+@media (orientation: landscape) and (max-height: 500px) {
+    /* 横向き（低い画面） */
+    .game-container {
+        flex-direction: row;
+        padding: 0.5rem;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        height: 40px;
+    }
+
+    .main-game {
+        flex-direction: row;
+        padding-top: 50px;
+        gap: 1rem;
+        height: 100vh;
+    }
+
+    .slot-area {
+        flex: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .slot-grid {
+        max-width: min(300px, 40vw);
+        max-height: 60vh;
+    }
+
+    .control-panel {
+        flex: 1;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-width: 200px;
+    }
+
+    .info-panel {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        order: -1;
+    }
+
+    .bet-controls {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.25rem;
+    }
+
+    .skill-controls {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+    }
+}
+
+@media (orientation: portrait) {
+    /* 縦向き（標準設定） */
+    /* 既存のスタイルを使用 */
+}
+
+/* ========================================
+   高解像度ディスプレイ対応
+   ======================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Retina/高DPIディスプレイ */
+    .symbol {
+        /* シャープなテキスト表示 */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .neon-text,
+    .neon-glow {
+        /* より細かいグロー効果 */
+        text-shadow:
+            0 0 2px currentColor,
+            0 0 4px currentColor,
+            0 0 8px currentColor,
+            0 0 12px var(--primary-neon),
+            0 0 16px var(--primary-neon);
+    }
+}
+
+/* ========================================
+   動的フォントサイズ（CSS clamp使用）
+   ======================================== */
+
+.game-title {
+    font-size: clamp(1rem, 4vw, 2rem);
+}
+
+.symbol {
+    font-size: clamp(1.5rem, 8vw, 4rem);
+}
+
+.coins-value,
+.bet-value,
+.multiplier-value {
+    font-size: clamp(0.9rem, 3vw, 1.5rem);
+}
+
+.spin-text {
+    font-size: clamp(0.9rem, 3vw, 1.4rem);
+}
+
+.skill-name {
+    font-size: clamp(0.5rem, 2vw, 0.8rem);
+}
+
+/* ========================================
+   タッチターゲットサイズ最適化
+   ======================================== */
+
+@media (pointer: coarse) {
+    /* タッチデバイス */
+    .bet-btn,
+    .skill-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .spin-btn {
+        min-width: 88px;
+        min-height: 88px;
+    }
+
+    .symbol {
+        min-height: 60px;
+        min-width: 60px;
+    }
+}
+
+@media (pointer: fine) {
+    /* マウス操作デバイス */
+    .bet-btn,
+    .skill-btn {
+        min-height: 36px;
+        min-width: 36px;
+    }
+}
+
+/* ========================================
+   セーフエリア対応（iPhone X系）
+   ======================================== */
+
+@supports (padding: max(0px)) {
+    .game-container {
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+        padding-top: max(0px, env(safe-area-inset-top));
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+
+    @media (orientation: landscape) {
+        .game-container {
+            padding-left: max(0.5rem, env(safe-area-inset-left));
+            padding-right: max(0.5rem, env(safe-area-inset-right));
+        }
+    }
+}
+
+/* ========================================
+   プリント最適化
+   ======================================== */
+
+@media print {
+    .game-container {
+        background: white !important;
+        color: black !important;
+    }
+
+    .neon-text,
+    .neon-glow {
+        text-shadow: none !important;
+        box-shadow: none !important;
+    }
+
+    .control-panel,
+    .footer {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   デバッグ・開発用ブレークポイント表示
+   ======================================== */
+
+.debug-breakpoint::before {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    z-index: 9999;
+    border-radius: 4px;
+}
+
+@media (max-width: 320px) {
+    .debug-breakpoint::before { content: "XS (≤320px)"; }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .debug-breakpoint::before { content: "S (321-480px)"; }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .debug-breakpoint::before { content: "M (481-768px)"; }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .debug-breakpoint::before { content: "L (769-1024px)"; }
+}
+
+@media (min-width: 1025px) {
+    .debug-breakpoint::before { content: "XL (≥1025px)"; }
+}

@@ -1,0 +1,373 @@
+/* ========================================
+   NEON RUSH - アニメーション定義
+   基盤・インフラチーム作成
+   ======================================== */
+
+/* ========================================
+   キーフレーム定義
+   ======================================== */
+
+/* スピン関連アニメーション */
+@keyframes spin-fast {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-300%); }
+}
+
+@keyframes spin-slow {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+}
+
+@keyframes spin-reel {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-300%); }
+}
+
+/* 勝利演出アニメーション */
+@keyframes winning-flash {
+    0%, 100% {
+        opacity: 1;
+        box-shadow: var(--glow) var(--primary-neon);
+    }
+    50% {
+        opacity: 0.3;
+        box-shadow: var(--glow-strong) var(--primary-neon);
+    }
+}
+
+@keyframes winning-pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: var(--glow) var(--primary-neon);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: var(--glow-strong) var(--primary-neon);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: var(--glow) var(--primary-neon);
+    }
+}
+
+/* パーティクルエフェクト */
+@keyframes particle-burst {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(3) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes particle-float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* ネオングロー効果 */
+@keyframes neon-pulse {
+    0%, 100% {
+        text-shadow: var(--glow) var(--primary-neon);
+        box-shadow: var(--glow) var(--primary-neon);
+    }
+    50% {
+        text-shadow: var(--glow-strong) var(--primary-neon);
+        box-shadow: var(--glow-strong) var(--primary-neon);
+    }
+}
+
+@keyframes neon-flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow: var(--glow) var(--primary-neon);
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+        opacity: 0.7;
+    }
+}
+
+/* 特殊モード用アニメーション */
+@keyframes fever-pulse {
+    0% {
+        background: var(--dark-bg);
+        box-shadow: inset var(--glow) var(--neon-red);
+    }
+    100% {
+        background: rgba(255, 0, 68, 0.1);
+        box-shadow: inset var(--glow-strong) var(--neon-red);
+    }
+}
+
+@keyframes god-mode-glow {
+    0% {
+        background: var(--dark-bg);
+        box-shadow: inset var(--glow) gold;
+    }
+    50% {
+        background: rgba(255, 215, 0, 0.1);
+        box-shadow: inset var(--glow-strong) gold;
+    }
+    100% {
+        background: var(--dark-bg);
+        box-shadow: inset var(--glow) gold;
+    }
+}
+
+/* UI要素アニメーション */
+@keyframes button-press {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slide-in-up {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-down {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fade-out {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ゲージアニメーション */
+@keyframes heat-gauge-fill {
+    0% { width: 0%; }
+    100% { width: var(--target-width, 100%); }
+}
+
+@keyframes coins-counter {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* ========================================
+   アニメーションクラス
+   ======================================== */
+
+/* スピン系 */
+.reel-spinning {
+    animation: spin-reel 0.1s linear infinite;
+}
+
+.spinning-fast {
+    animation: spin-fast 0.05s linear infinite;
+}
+
+.spinning-slow {
+    animation: spin-slow 0.2s linear infinite;
+}
+
+/* 勝利演出系 */
+.winning {
+    animation: winning-flash 0.3s ease-in-out 3;
+}
+
+.winning-pulse {
+    animation: winning-pulse 0.5s ease-in-out 2;
+}
+
+.big-win {
+    animation:
+        winning-pulse 0.3s ease-in-out 5,
+        neon-pulse 1s ease-in-out infinite;
+}
+
+/* パーティクル系 */
+.particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.particle-burst {
+    animation: particle-burst 1s ease-out forwards;
+}
+
+.particle-float {
+    animation: particle-float 2s ease-out forwards;
+}
+
+/* ネオン効果系 */
+.neon-pulse {
+    animation: neon-pulse 2s ease-in-out infinite;
+}
+
+.neon-flicker {
+    animation: neon-flicker 3s ease-in-out infinite;
+}
+
+/* 特殊モード系 */
+.fever-mode-bg {
+    animation: fever-pulse 1s ease-in-out infinite alternate;
+}
+
+.god-mode-bg {
+    animation: god-mode-glow 2s ease-in-out infinite;
+}
+
+/* UI系 */
+.button-pressed {
+    animation: button-press 0.2s ease-out;
+}
+
+.slide-in-up {
+    animation: slide-in-up 0.5s ease-out;
+}
+
+.slide-in-down {
+    animation: slide-in-down 0.5s ease-out;
+}
+
+.fade-in {
+    animation: fade-in 0.3s ease-out;
+}
+
+.fade-out {
+    animation: fade-out 0.3s ease-out;
+}
+
+/* ゲージ・カウンター系 */
+.heat-gauge-animate {
+    animation: heat-gauge-fill 1s ease-out;
+}
+
+.coins-animate {
+    animation: coins-counter 0.5s ease-out;
+}
+
+/* ========================================
+   パフォーマンス最適化
+   ======================================== */
+
+/* GPU加速の指定 */
+.reel-spinning,
+.winning,
+.particle,
+.neon-pulse,
+.fever-mode-bg,
+.god-mode-bg {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+}
+
+/* アニメーション後のクリーンアップ */
+.animation-cleanup {
+    will-change: auto;
+}
+
+/* ========================================
+   レスポンシブアニメーション調整
+   ======================================== */
+
+/* 小画面での調整 */
+@media (max-width: 480px) {
+    .winning {
+        animation-duration: 0.2s;
+        animation-iteration-count: 2;
+    }
+
+    .big-win {
+        animation-duration: 0.2s, 0.8s;
+        animation-iteration-count: 3, infinite;
+    }
+
+    .particle-burst {
+        animation-duration: 0.8s;
+    }
+}
+
+/* 高性能デバイス向け強化 */
+@media (min-width: 768px) and (min-height: 600px) {
+    .big-win {
+        animation:
+            winning-pulse 0.3s ease-in-out 7,
+            neon-pulse 1s ease-in-out infinite,
+            particle-burst 1.5s ease-out infinite;
+    }
+}
+
+/* ========================================
+   アクセシビリティ対応
+   ======================================== */
+
+/* モーション削減設定 */
+@media (prefers-reduced-motion: reduce) {
+    .reel-spinning,
+    .spinning-fast,
+    .spinning-slow {
+        animation: none;
+    }
+
+    .winning,
+    .winning-pulse,
+    .big-win {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .neon-pulse,
+    .neon-flicker,
+    .fever-mode-bg,
+    .god-mode-bg {
+        animation: none;
+    }
+
+    .particle-burst,
+    .particle-float {
+        animation: none;
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   デバッグ・開発用
+   ======================================== */
+
+/* 開発時のアニメーション速度調整 */
+.debug-slow-animation * {
+    animation-duration: 3s !important;
+    transition-duration: 1s !important;
+}
+
+.debug-no-animation * {
+    animation: none !important;
+    transition: none !important;
+}

@@ -1,0 +1,262 @@
+/* ========================================
+   NEON RUSH - テーマ・カラーシステム
+   基盤・インフラチーム作成
+   ======================================== */
+
+/* ========================================
+   CSS カスタムプロパティ（変数）定義
+   ======================================== */
+
+:root {
+    /* ネオンカラーパレット */
+    --neon-pink: #ff00ff;
+    --neon-cyan: #00ffff;
+    --neon-green: #00ff88;
+    --neon-yellow: #ffff00;
+    --neon-orange: #ff9900;
+    --neon-purple: #9900ff;
+    --neon-red: #ff0044;
+    --neon-blue: #0088ff;
+
+    /* 背景・ベースカラー */
+    --dark-bg: #0a0a0a;
+    --dark-surface: #1a1a1a;
+    --dark-card: #2a2a2a;
+
+    /* テキストカラー */
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #888888;
+
+    /* グロウエフェクト */
+    --glow: 0 0 20px;
+    --glow-strong: 0 0 30px;
+    --glow-subtle: 0 0 10px;
+
+    /* アニメーション設定 */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+
+    /* ステージ別プライマリカラー（デフォルト：Stage 1） */
+    --primary-neon: var(--neon-green);
+    --secondary-neon: var(--neon-cyan);
+    --accent-neon: var(--neon-yellow);
+}
+
+/* ========================================
+   ステージ別テーマ設定
+   ======================================== */
+
+/* Stage 1: 初心者 - グリーン系 */
+.stage-1 {
+    --primary-neon: var(--neon-green);
+    --secondary-neon: var(--neon-cyan);
+    --accent-neon: var(--neon-yellow);
+}
+
+/* Stage 2: 中級者 - オレンジ系 */
+.stage-2 {
+    --primary-neon: var(--neon-orange);
+    --secondary-neon: var(--neon-yellow);
+    --accent-neon: var(--neon-red);
+}
+
+/* Stage 3: 上級者 - ピンク系 */
+.stage-3 {
+    --primary-neon: var(--neon-pink);
+    --secondary-neon: var(--neon-purple);
+    --accent-neon: var(--neon-cyan);
+}
+
+/* Stage 4: エキスパート - パープル系 */
+.stage-4 {
+    --primary-neon: var(--neon-purple);
+    --secondary-neon: var(--neon-pink);
+    --accent-neon: var(--neon-blue);
+}
+
+/* Stage 5: マスター - イエロー系 */
+.stage-5 {
+    --primary-neon: var(--neon-yellow);
+    --secondary-neon: var(--neon-orange);
+    --accent-neon: var(--neon-pink);
+}
+
+/* ========================================
+   ネオングロー効果テンプレート
+   ======================================== */
+
+.neon-glow {
+    text-shadow:
+        0 0 5px currentColor,
+        0 0 10px currentColor,
+        0 0 15px currentColor,
+        0 0 20px var(--primary-neon);
+    box-shadow:
+        0 0 5px var(--primary-neon),
+        inset 0 0 5px var(--primary-neon);
+}
+
+.neon-glow-strong {
+    text-shadow:
+        0 0 5px currentColor,
+        0 0 10px currentColor,
+        0 0 15px currentColor,
+        0 0 20px var(--primary-neon),
+        0 0 30px var(--primary-neon);
+    box-shadow:
+        0 0 10px var(--primary-neon),
+        0 0 20px var(--primary-neon),
+        inset 0 0 10px var(--primary-neon);
+}
+
+.neon-glow-subtle {
+    text-shadow:
+        0 0 3px currentColor,
+        0 0 6px currentColor,
+        0 0 10px var(--primary-neon);
+    box-shadow:
+        0 0 3px var(--primary-neon),
+        inset 0 0 3px var(--primary-neon);
+}
+
+/* ========================================
+   特殊状態テーマ
+   ======================================== */
+
+/* フィーバーモード */
+.fever-mode {
+    --primary-neon: var(--neon-red);
+    --secondary-neon: var(--neon-orange);
+    --accent-neon: var(--neon-yellow);
+}
+
+/* ゴッドモード */
+.god-mode {
+    --primary-neon: gold;
+    --secondary-neon: var(--neon-yellow);
+    --accent-neon: var(--neon-orange);
+}
+
+/* 破産危機モード */
+.bankruptcy-warning {
+    --primary-neon: var(--neon-red);
+    --secondary-neon: var(--neon-pink);
+    --accent-neon: var(--neon-orange);
+}
+
+/* ========================================
+   カラーユーティリティクラス
+   ======================================== */
+
+/* 個別カラー適用 */
+.color-pink { color: var(--neon-pink); }
+.color-cyan { color: var(--neon-cyan); }
+.color-green { color: var(--neon-green); }
+.color-yellow { color: var(--neon-yellow); }
+.color-orange { color: var(--neon-orange); }
+.color-purple { color: var(--neon-purple); }
+.color-red { color: var(--neon-red); }
+.color-blue { color: var(--neon-blue); }
+
+/* ボーダーカラー */
+.border-pink { border-color: var(--neon-pink); }
+.border-cyan { border-color: var(--neon-cyan); }
+.border-green { border-color: var(--neon-green); }
+.border-yellow { border-color: var(--neon-yellow); }
+.border-orange { border-color: var(--neon-orange); }
+.border-purple { border-color: var(--neon-purple); }
+.border-red { border-color: var(--neon-red); }
+.border-blue { border-color: var(--neon-blue); }
+
+/* 背景カラー */
+.bg-pink { background-color: rgba(255, 0, 255, 0.1); }
+.bg-cyan { background-color: rgba(0, 255, 255, 0.1); }
+.bg-green { background-color: rgba(0, 255, 136, 0.1); }
+.bg-yellow { background-color: rgba(255, 255, 0, 0.1); }
+.bg-orange { background-color: rgba(255, 153, 0, 0.1); }
+.bg-purple { background-color: rgba(153, 0, 255, 0.1); }
+.bg-red { background-color: rgba(255, 0, 68, 0.1); }
+.bg-blue { background-color: rgba(0, 136, 255, 0.1); }
+
+/* ========================================
+   グラデーション定義
+   ======================================== */
+
+.gradient-neon-horizontal {
+    background: linear-gradient(90deg,
+        var(--neon-cyan) 0%,
+        var(--neon-pink) 25%,
+        var(--neon-yellow) 50%,
+        var(--neon-green) 75%,
+        var(--neon-purple) 100%);
+}
+
+.gradient-neon-vertical {
+    background: linear-gradient(180deg,
+        var(--neon-cyan) 0%,
+        var(--neon-pink) 25%,
+        var(--neon-yellow) 50%,
+        var(--neon-green) 75%,
+        var(--neon-purple) 100%);
+}
+
+.gradient-neon-radial {
+    background: radial-gradient(circle,
+        var(--primary-neon) 0%,
+        var(--secondary-neon) 50%,
+        var(--dark-bg) 100%);
+}
+
+/* ========================================
+   ダークモード対応（将来拡張用）
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* ダークモード時の調整（現在は標準がダーク） */
+        --text-primary: #ffffff;
+        --text-secondary: #cccccc;
+    }
+}
+
+/* ========================================
+   高コントラスト対応
+   ======================================== */
+
+@media (prefers-contrast: high) {
+    :root {
+        --glow: 0 0 30px;
+        --glow-strong: 0 0 50px;
+    }
+
+    .neon-glow,
+    .neon-text {
+        text-shadow:
+            0 0 5px currentColor,
+            0 0 10px currentColor,
+            0 0 15px currentColor,
+            0 0 25px var(--primary-neon),
+            0 0 35px var(--primary-neon);
+    }
+}
+
+/* ========================================
+   モーションリダクション対応
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition-fast: 0s;
+        --transition-normal: 0s;
+        --transition-slow: 0s;
+    }
+
+    /* グローエフェクトのみ残し、アニメーションを無効化 */
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
