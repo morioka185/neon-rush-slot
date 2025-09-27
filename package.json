@@ -1,0 +1,17 @@
+{
+  "name": "neon-rush",
+  "version": "1.0.0",
+  "description": "NEON RUSH - スマホ対応スロットゲーム",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=8080 --entry-file=index.html",
+    "serve": "python3 -m http.server 8080",
+    "start": "npm run dev"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": ["slot", "game", "mobile", "neon", "casino"],
+  "author": "Team A - 基盤・インフラチーム",
+  "license": "MIT"
+}
